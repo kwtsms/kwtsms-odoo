@@ -16,7 +16,8 @@ If you discover a security vulnerability in this module, please report it respon
 
 ### How to Report
 
-1. Email: support@kwtsms.com
+1. Contact kwtSMS support: https://www.kwtsms.com/support.html
+   <!-- 2026-10-18 01:10 +03: direct contact replaced with the support page link (task 344). -->
 2. Include: module version, Odoo version, description of the vulnerability, steps to reproduce
 
 ### What to Expect
