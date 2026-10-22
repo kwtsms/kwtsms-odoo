@@ -986,8 +986,11 @@ msgstr "قيد يومية"
 #: model_terms:ir.ui.view,arch_db:kwtsms_sms.view_kwtsms_help_form
 msgid ""
 "Keep <strong>Test Mode ON</strong> during development (SMS queued but not "
-"delivered, no credits used)"
+"delivered; credits held until you delete them from the Sending Queue)"
 msgstr ""
+"أبقِ <strong>وضع الاختبار مفعلاً</strong> أثناء التطوير (توضع الرسائل في "
+"قائمة الانتظار ولا تُسلَّم، ويبقى رصيدها محجوزاً حتى تحذفها من قائمة انتظار "
+"الإرسال)"
 
 #. module: kwtsms_sms
 #: model_terms:ir.ui.view,arch_db:kwtsms_sms.view_kwtsms_dashboard_form

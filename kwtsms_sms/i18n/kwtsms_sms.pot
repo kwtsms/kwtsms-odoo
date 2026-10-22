@@ -959,7 +959,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:kwtsms_sms.view_kwtsms_help_form
 msgid ""
 "Keep <strong>Test Mode ON</strong> during development (SMS queued but not "
-"delivered, no credits used)"
+"delivered; credits held until you delete them from the Sending Queue)"
 msgstr ""
 
 #. module: kwtsms_sms

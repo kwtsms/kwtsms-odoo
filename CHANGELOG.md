@@ -8,6 +8,9 @@ with Odoo version prefix (e.g., 19.0.1.0.0).
 
 ## [Unreleased]
 
+### Docs
+- Test mode: test messages are queued but not delivered. Their credits are held until you delete them from the Sending Queue in your kwtsms.com account (help page, README, store description and Arabic translation corrected).
+
 ## [0.4.0] - 2026-03-17
 
 ### Added

@@ -21,7 +21,7 @@ Send SMS messages from Odoo using the [kwtSMS](https://www.kwtsms.com) gateway. 
 - **Balance Tracking**: Real-time kwtSMS account balance display
 - **Sender ID Management**: Dynamically fetch and select approved Sender IDs
 - **Arabic Support**: RTL-aware templates, Unicode character counting, full Arabic UI translation
-- **Test Mode**: Send with `test=1` during development (no credits consumed)
+- **Test Mode**: Send with `test=1` during development (queued, not delivered; credits held until you delete it from the Sending Queue)
 - **Test SMS Widget**: Send a test SMS directly from the Gateway page
 
 ## Supported Odoo Versions
@@ -52,7 +52,7 @@ Send SMS messages from Odoo using the [kwtSMS](https://www.kwtsms.com) gateway. 
 3. Enter your kwtSMS API Username and Password
 4. Click **Login** to verify credentials and fetch your account data
 5. Select your **Sender ID** from the dropdown (auto-populated after login)
-6. Keep **Test Mode ON** during development (SMS queued but not delivered, no credits used)
+6. Keep **Test Mode ON** during development (SMS queued but not delivered; credits held until you delete them from the Sending Queue in your kwtsms.com account)
 7. Enable the **SMS Notification** toggles you need (Sales, Inventory, Accounting)
 8. Use **Send Test SMS** on the Gateway page to verify end-to-end
 9. Switch **Test Mode OFF** when ready for production
