@@ -1,6 +1,6 @@
 # kwtSMS Gateway for Odoo
 
-[![CI](https://github.com/boxlinknet/kwtsms-odoo/actions/workflows/ci.yml/badge.svg)](https://github.com/boxlinknet/kwtsms-odoo/actions/workflows/ci.yml)
+[![CI](https://github.com/kwtsms/kwtsms-odoo/actions/workflows/ci.yml/badge.svg)](https://github.com/kwtsms/kwtsms-odoo/actions/workflows/ci.yml)
 ![Odoo 19.0](https://img.shields.io/badge/Odoo-19.0-714B67)
 ![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB)
 ![License: OPL-1](https://img.shields.io/badge/License-OPL--1-blue)
