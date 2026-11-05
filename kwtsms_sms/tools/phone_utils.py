@@ -327,8 +327,10 @@ def prepare_phone(phone, default_country_code=None):
     """Normalize, validate, and prepend default country code if needed.
 
     If the normalized number is 9 digits or fewer and a default country code
-    is provided, the code is prepended (e.g. '98765432' with code '965'
-    becomes '96598765432').
+    is provided, the code is prepended (e.g. 'XXXXXXXX' with code '965'
+    becomes '965XXXXXXXX').
+    (2026-11-05 11:30 +03: example uses the placeholder XXXXXXXX instead of a sample
+    mobile number, sample numbers belong to real people, int-testnumber)
 
     Args:
         phone (str): Raw phone number string.

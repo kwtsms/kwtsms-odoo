@@ -7,8 +7,9 @@
         <field name="arch" type="xml">
             <form string="SMS Sender">
                 <group>
+                    <!-- 2026-11-05 11:30 +03: placeholder 965XXXXXXXX instead of sample mobile numbers (they belong to real people), int-testnumber -->
                     <field name="phone"
-                           placeholder="96598765432, 96512345678&#10;or one per line"
+                           placeholder="965XXXXXXXX, 965XXXXXXXX&#10;or one per line"
                            string="Phone Number(s)"/>
                     <field name="template_id"
                            domain="[('active', '=', True)]"/>

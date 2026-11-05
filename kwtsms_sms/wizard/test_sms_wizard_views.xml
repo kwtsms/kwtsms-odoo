@@ -6,7 +6,8 @@
         <field name="arch" type="xml">
             <form string="Send Test SMS">
                 <group col="1">
-                    <field name="phone" placeholder="e.g. 96598765432"/>
+                    <!-- 2026-11-05 11:30 +03: placeholder 965XXXXXXXX instead of a sample mobile number (sample numbers belong to real people), int-testnumber -->
+                    <field name="phone" placeholder="e.g. 965XXXXXXXX"/>
                     <field name="message" widget="text" placeholder="Test message"/>
                 </group>
                 <footer>

@@ -3,10 +3,11 @@
     <t t-name="kwtsms_sms.TestSmsWidget">
         <div>
             <div>
+                <!-- 2026-11-05 11:30 +03: placeholder 965XXXXXXXX instead of a sample mobile number (sample numbers belong to real people), int-testnumber -->
                 <input type="text" class="o_input"
                        t-att-value="state.phone"
                        t-on-input="onPhoneInput"
-                       placeholder="e.g. 96598765432"
+                       placeholder="e.g. 965XXXXXXXX"
                        style="max-width: 400px;"/>
             </div>
             <div class="mt-2">

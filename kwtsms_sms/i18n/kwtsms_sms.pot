@@ -36,7 +36,7 @@ msgstr ""
 #. module: kwtsms_sms
 #: model_terms:ir.ui.view,arch_db:kwtsms_sms.view_kwtsms_sms_compose_form
 msgid ""
-"96598765432, 96512345678\n"
+"965XXXXXXXX, 965XXXXXXXX\n"
 "or one per line"
 msgstr ""
 
@@ -1695,7 +1695,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/kwtsms_sms/static/src/xml/test_sms_widget.xml:0
 #: model_terms:ir.ui.view,arch_db:kwtsms_sms.view_kwtsms_test_sms_wizard_form
-msgid "e.g. 96598765432"
+msgid "e.g. 965XXXXXXXX"
 msgstr ""
 
 #. module: kwtsms_sms
