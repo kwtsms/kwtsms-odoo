@@ -1,7 +1,9 @@
 """kwtSMS API client integrated with Odoo's SMS framework."""
 
+import ast  # 2026-11-05 14:50 +03: read the manifest version for the User-Agent, #939
 import json
 import logging
+import os  # 2026-11-05 14:50 +03: locate __manifest__.py for the User-Agent, #939
 import time
 import urllib.request
 import urllib.error
@@ -19,6 +21,28 @@ API_TIMEOUT = 30
 BATCH_SIZE = 200
 BATCH_DELAY = 0.5
 MAX_SMS_PAGES = 7
+
+
+def _user_agent():
+    """User-Agent sent on every API call: 'kwtsms-odoo/<__manifest__.py version>'.
+
+    2026-11-05 14:50 +03: added so kwtSMS can count accounts per integration (name and version only,
+    no personal data); the version is read from the manifest, not typed twice, #939.
+    """
+    global _USER_AGENT
+    if _USER_AGENT is None:
+        version = '0.0.0'
+        try:
+            manifest = os.path.join(os.path.dirname(os.path.dirname(__file__)), '__manifest__.py')
+            with open(manifest, encoding='utf-8') as fh:
+                version = str(ast.literal_eval(fh.read()).get('version') or version)
+        except (OSError, ValueError, SyntaxError, AttributeError):
+            _logger.warning('kwtSMS: could not read the module version for the User-Agent')
+        _USER_AGENT = 'kwtsms-odoo/' + version
+    return _USER_AGENT
+
+
+_USER_AGENT = None
 
 # Map kwtSMS error codes to Odoo SMS failure types
 KWTSMS_ERROR_MAP = {
@@ -547,6 +571,8 @@ class KwtSmsApi(SmsApiBase):
             headers={
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
+                # 2026-11-05 14:50 +03: identify the integration (kwtsms-odoo/<version>), #939
+                'User-Agent': _user_agent(),
             },
             method='POST',
         )

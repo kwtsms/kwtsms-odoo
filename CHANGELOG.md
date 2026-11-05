@@ -8,6 +8,9 @@ with Odoo version prefix (e.g., 19.0.1.0.0).
 
 ## [Unreleased]
 
+### Added
+- Requests to kwtSMS carry the integration name and version (no personal data) so kwtSMS can see which integrations are in use.
+
 ### Changed
 - Phone field placeholders and examples (English and Arabic) show 965XXXXXXXX instead of a sample mobile number.
 
