@@ -1,3 +1,4 @@
+# 2026-11-16 01:28 +03: res.users field is groups_id before Odoo 19 (group_ids). Task int-backport
 """Tests for kwtSMS security: access rights, record rules, groups."""
 
 from odoo.exceptions import AccessError
@@ -20,19 +21,19 @@ class TestKwtSmsAccessRights(TransactionCase):
             'name': 'Layla Al-Hamad',
             'login': 'layla@alsalam-electronics.kw',
             'email': 'layla@alsalam-electronics.kw',
-            'group_ids': [(6, 0, [cls.group_user.id])],
+            'groups_id': [(6, 0, [cls.group_user.id])],
         })
         cls.manager_user = cls.env['res.users'].create({
             'name': 'Tariq Al-Bloushi',
             'login': 'tariq@alsalam-electronics.kw',
             'email': 'tariq@alsalam-electronics.kw',
-            'group_ids': [(6, 0, [cls.group_manager.id])],
+            'groups_id': [(6, 0, [cls.group_manager.id])],
         })
         cls.system_user = cls.env['res.users'].create({
             'name': 'Fahad Al-Kandari',
             'login': 'fahad@alsalam-electronics.kw',
             'email': 'fahad@alsalam-electronics.kw',
-            'group_ids': [(6, 0, [cls.group_system.id])],
+            'groups_id': [(6, 0, [cls.group_system.id])],
         })
 
     # ---------------------------------------------------------------
@@ -297,7 +298,7 @@ class TestKwtSmsRecordRules(TransactionCase):
             'email': 'nasser@alsalam-electronics.kw',
             'company_id': cls.company_a.id,
             'company_ids': [(6, 0, [cls.company_a.id])],
-            'group_ids': [(6, 0, [cls.env.ref('base.group_user').id])],
+            'groups_id': [(6, 0, [cls.env.ref('base.group_user').id])],
         })
         cls.user_b = cls.env['res.users'].create({
             'name': 'Amina Al-Fadhli',
@@ -305,7 +306,7 @@ class TestKwtSmsRecordRules(TransactionCase):
             'email': 'amina@gulfstar-trading.kw',
             'company_id': cls.company_b.id,
             'company_ids': [(6, 0, [cls.company_b.id])],
-            'group_ids': [(6, 0, [cls.env.ref('base.group_user').id])],
+            'groups_id': [(6, 0, [cls.env.ref('base.group_user').id])],
         })
 
     def test_log_company_isolation(self):
@@ -446,7 +447,7 @@ class TestKwtSmsManagerGroup(TransactionCase):
             'name': 'Jassim Al-Hajri',
             'login': 'jassim@alsalam-electronics.kw',
             'email': 'jassim@alsalam-electronics.kw',
-            'group_ids': [(6, 0, [self.group_manager.id])],
+            'groups_id': [(6, 0, [self.group_manager.id])],
         })
         self.assertTrue(user.has_group('base.group_user'))
         self.assertTrue(user.has_group('kwtsms_sms.group_kwtsms_manager'))

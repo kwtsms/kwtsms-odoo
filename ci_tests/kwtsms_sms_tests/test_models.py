@@ -627,7 +627,10 @@ class TestGatewayConfigSettings(TransactionCase):
     def test_cfg_sender_id_write(self):
         """Test writing cfg_sender_id saves to system parameters."""
         config = self._get_config()
-        config.cfg_sender_id = 'MYSENDER'
+        # 2026-11-16: Odoo 17/18 validate a Selection against its list; offer MYSENDER like the live sender list does. Task int-backport
+        with patch.object(type(config), '_get_sender_id_selection',
+                          return_value=[('KWT-SMS', 'KWT-SMS'), ('MYSENDER', 'MYSENDER')]):
+            config.cfg_sender_id = 'MYSENDER'
         ICP = self.env['ir.config_parameter'].sudo()
         self.assertEqual(ICP.get_param('kwtsms.sender_id'), 'MYSENDER')
 

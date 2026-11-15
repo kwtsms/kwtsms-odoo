@@ -896,6 +896,8 @@ class TestSaleOrderSmsIntegration(TransactionCase):
             'body': '\u062a\u0645 \u062a\u0623\u0643\u064a\u062f \u0637\u0644\u0628\u0643 {order_name}',
         })
 
+        # 2026-11-16: res.partner.lang only accepts installed languages in Odoo 17/18; activate ar_001 first. Task int-backport
+        self.env['res.lang']._activate_lang('ar_001')
         ar_partner = self.env['res.partner'].create({
             'name': 'Hessa Al-Fahad',
             'phone': '+96598765432',
@@ -986,6 +988,7 @@ class TestStockPickingSmsIntegration(TransactionCase):
             'location_id': location_src.id,
             'location_dest_id': location_dest.id,
             'move_ids': [(0, 0, {
+                'name': 'Test move',  # 2026-11-16 01:28 +03: stock.move.name is required before Odoo 19. Task int-backport
                 'product_id': self.product.id,
                 'product_uom_qty': 1.0,
                 'product_uom': self.product.uom_id.id,
@@ -1067,6 +1070,7 @@ class TestStockPickingSmsIntegration(TransactionCase):
             'location_id': location_src.id,
             'location_dest_id': location_dest.id,
             'move_ids': [(0, 0, {
+                'name': 'Test move',  # 2026-11-16 01:28 +03: stock.move.name is required before Odoo 19. Task int-backport
                 'product_id': self.product.id,
                 'product_uom_qty': 1.0,
                 'product_uom': self.product.uom_id.id,
