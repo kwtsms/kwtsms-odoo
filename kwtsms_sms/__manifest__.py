@@ -33,7 +33,8 @@ Send SMS via Kuwait's leading SMS gateway directly from Odoo. Features:
     ],
     'data': [
         'security/kwtsms_security.xml',
-        'security/ir.model.access.csv',
+        # 2026-11-16 01:27 +03: ir.access.csv replaces ir.model.access.csv in Odoo 20. Task int-backport
+        'security/ir.access.csv',
         'data/kwtsms_data.xml',
         'data/ir_cron_data.xml',
         'views/kwtsms_sms_log_views.xml',
