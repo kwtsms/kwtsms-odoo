@@ -46,11 +46,34 @@ jobs:
       - name: Copy test suite into the module
         run: cp -r ci_tests/kwtsms_sms_tests kwtsms_sms/tests
 
+      # 2026-11-16 01:22 +03: install first, seed, then test. The suite was written against a dev database whose
+      # kwtsms.gateway.config row already had a balance and a recent last_verified; on a fresh database every
+      # send path stops at the balance pre-flight. Seeding reproduces that state without touching module code. int-backport
+      - name: Install module
+        run: |
+          odoo -d test_db \
+            --addons-path=/usr/lib/python3/dist-packages/odoo/addons,$GITHUB_WORKSPACE \
+            -i kwtsms_sms --stop-after-init --no-http \
+            --db_host=db --db_user=odoo --db_password=odoo \
+            2>&1 | tee /tmp/odoo-install.log
+
+      - name: Seed gateway config
+        run: |
+          odoo shell -d test_db \
+            --addons-path=/usr/lib/python3/dist-packages/odoo/addons,$GITHUB_WORKSPACE \
+            --no-http --db_host=db --db_user=odoo --db_password=odoo <<'PY'
+          from odoo import fields
+          cfg = env['kwtsms.gateway.config'].sudo()._get_or_create()
+          cfg.write({'balance_available': 1000, 'last_verified': fields.Datetime.now()})
+          env.cr.commit()
+          print('seeded', cfg.balance_available)
+          PY
+
       - name: Run module tests
         run: |
           odoo -d test_db \
             --addons-path=/usr/lib/python3/dist-packages/odoo/addons,$GITHUB_WORKSPACE \
-            -i kwtsms_sms \
+            -u kwtsms_sms \
             --test-enable \
             --test-tags=kwtsms_sms,-kwtsms_e2e \
             --stop-after-init \
@@ -63,10 +86,11 @@ jobs:
       - name: Check for test failures
         if: always()
         run: |
-          if grep -q "0 failed, 0 error" /tmp/odoo-test.log; then
+          grep -E "odoo.tests.result|tests in [0-9.]+s" /tmp/odoo-test.log | tail -3
+          if grep -qE "(^|[^0-9])0 failed, 0 error" /tmp/odoo-test.log; then
             echo "All tests passed"
           else
             echo "Test failures detected"
-            tail -20 /tmp/odoo-test.log
+            grep -E "FAIL:|ERROR:" /tmp/odoo-test.log | head -40
             exit 1
           fi
