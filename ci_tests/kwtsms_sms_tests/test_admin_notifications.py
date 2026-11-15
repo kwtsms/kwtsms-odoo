@@ -453,6 +453,7 @@ class TestInventoryAdminHook(TransactionCase):
             'location_id': location_src.id,
             'location_dest_id': location_dest.id,
             'move_ids': [(0, 0, {
+                'name': 'Test move',  # 2026-11-16 01:28 +03: stock.move.name is required before Odoo 19. Task int-backport
                 'product_id': self.product.id,
                 'product_uom_qty': 5.0,
                 'product_uom': self.product.uom_id.id,
@@ -475,6 +476,7 @@ class TestInventoryAdminHook(TransactionCase):
             'location_id': location_src.id,
             'location_dest_id': location_dest.id,
             'move_ids': [(0, 0, {
+                'name': 'Test move',  # 2026-11-16 01:28 +03: stock.move.name is required before Odoo 19. Task int-backport
                 'product_id': self.product.id,
                 'product_uom_qty': 1.0,
                 'product_uom': self.product.uom_id.id,

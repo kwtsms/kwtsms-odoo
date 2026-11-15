@@ -1,3 +1,4 @@
+# 2026-11-16 01:28 +03: res.users field is groups_id before Odoo 19 (group_ids). Task int-backport
 """Tests for Phase 4 OTP models, services, and MFA hooks."""
 
 from datetime import timedelta
@@ -227,7 +228,7 @@ class TestOtpDevice(TransactionCase):
         cls.user = cls.env['res.users'].create({
             'name': 'OTP Test User',
             'login': 'otp_test@example.com',
-            'group_ids': [(6, 0, [cls.env.ref('base.group_user').id])],
+            'groups_id': [(6, 0, [cls.env.ref('base.group_user').id])],
         })
 
     def _create_device(self, **kw):
@@ -268,7 +269,7 @@ class TestOtpDevice(TransactionCase):
         user2 = self.env['res.users'].create({
             'name': 'Temp User',
             'login': 'temp_otp@example.com',
-            'group_ids': [(6, 0, [self.env.ref('base.group_user').id])],
+            'groups_id': [(6, 0, [self.env.ref('base.group_user').id])],
         })
         device = self._create_device(user_id=user2.id)
         device_id = device.id
@@ -382,12 +383,12 @@ class TestResUsersMfa(TransactionCase):
         cls.backend_user = cls.env['res.users'].create({
             'name': 'Backend MFA',
             'login': 'backend_mfa@example.com',
-            'group_ids': [(6, 0, [cls.env.ref('base.group_user').id])],
+            'groups_id': [(6, 0, [cls.env.ref('base.group_user').id])],
         })
         cls.portal_user = cls.env['res.users'].create({
             'name': 'Portal MFA',
             'login': 'portal_mfa@example.com',
-            'group_ids': [(6, 0, [cls.env.ref('base.group_portal').id])],
+            'groups_id': [(6, 0, [cls.env.ref('base.group_portal').id])],
         })
 
     def setUp(self):

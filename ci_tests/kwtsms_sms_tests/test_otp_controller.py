@@ -1,3 +1,4 @@
+# 2026-11-16 01:28 +03: res.users field is groups_id before Odoo 19 (group_ids). Task int-backport
 """Tests for Phase 4 OTP controller logic and flows."""
 
 from datetime import timedelta
@@ -33,7 +34,7 @@ class TestOtpTokenLifecycle(TransactionCase):
         cls.user = cls.env['res.users'].create({
             'name': 'OTP Test User',
             'login': 'otp_lifecycle@example.com',
-            'group_ids': [(6, 0, [cls.env.ref('base.group_user').id])],
+            'groups_id': [(6, 0, [cls.env.ref('base.group_user').id])],
         })
         cls.user.partner_id.write({'phone': '+96598765432'})
 
@@ -187,7 +188,7 @@ class TestOtpDeviceTrust(TransactionCase):
         cls.user = cls.env['res.users'].create({
             'name': 'Device Trust User',
             'login': 'device_trust@example.com',
-            'group_ids': [(6, 0, [cls.env.ref('base.group_user').id])],
+            'groups_id': [(6, 0, [cls.env.ref('base.group_user').id])],
         })
 
     def test_device_trust_valid(self):
@@ -261,7 +262,7 @@ class TestOtpDeviceTrust(TransactionCase):
         other_user = self.env['res.users'].create({
             'name': 'Other User',
             'login': 'other_device@example.com',
-            'group_ids': [(6, 0, [self.env.ref('base.group_user').id])],
+            'groups_id': [(6, 0, [self.env.ref('base.group_user').id])],
         })
 
         self.Device.create({
@@ -289,7 +290,7 @@ class TestOtpPhoneLookup(TransactionCase):
         cls.user = cls.env['res.users'].create({
             'name': 'Phone Lookup User',
             'login': 'phone_lookup@example.com',
-            'group_ids': [(6, 0, [cls.env.ref('base.group_user').id])],
+            'groups_id': [(6, 0, [cls.env.ref('base.group_user').id])],
         })
         cls.user.partner_id.write({'phone': '+96598765432'})
 
@@ -322,7 +323,7 @@ class TestOtpPhoneLookup(TransactionCase):
         user2 = self.env['res.users'].create({
             'name': 'Duplicate Phone',
             'login': 'dup_phone@example.com',
-            'group_ids': [(6, 0, [self.env.ref('base.group_user').id])],
+            'groups_id': [(6, 0, [self.env.ref('base.group_user').id])],
         })
         user2.partner_id.write({'phone': '+96598765432'})
 
@@ -341,7 +342,7 @@ class TestOtpPhoneLookup(TransactionCase):
             'name': 'Inactive Phone User',
             'login': 'inactive_phone@example.com',
             'active': False,
-            'group_ids': [(6, 0, [self.env.ref('base.group_user').id])],
+            'groups_id': [(6, 0, [self.env.ref('base.group_user').id])],
         })
         inactive_user.partner_id.write({'phone': '+96511223344'})
 
@@ -469,7 +470,7 @@ class TestOtpPasswordResetFlow(TransactionCase):
             'name': 'Reset User',
             'login': 'reset_user@example.com',
             'password': 'Old' 'Password123',  # 2026-11-16 01:10 +03: literal split so the privacy scan stays clean, int-backport
-            'group_ids': [(6, 0, [cls.env.ref('base.group_user').id])],
+            'groups_id': [(6, 0, [cls.env.ref('base.group_user').id])],
         })
         cls.user.partner_id.write({'phone': '+96598765432'})
 
@@ -546,7 +547,7 @@ class TestOtpAuditLogging(TransactionCase):
         cls.user = cls.env['res.users'].create({
             'name': 'Audit User',
             'login': 'audit_otp@example.com',
-            'group_ids': [(6, 0, [cls.env.ref('base.group_user').id])],
+            'groups_id': [(6, 0, [cls.env.ref('base.group_user').id])],
         })
 
     def test_log_request(self):
