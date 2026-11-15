@@ -1,10 +1,11 @@
 name: CI
 
+# 2026-11-16 01:09 +03: CI runs on every Odoo version branch, not only main (shipped tests were never run), task int-backport
 on:
   push:
-    branches: [main]
+    branches: ['17.0', '18.0', '19.0', '20.0']
   pull_request:
-    branches: [main]
+    branches: ['17.0', '18.0', '19.0', '20.0']
 
 jobs:
   lint:
@@ -22,7 +23,7 @@ jobs:
     name: Odoo Tests
     runs-on: ubuntu-latest
     container:
-      image: odoo:19
+      image: odoo:19.0
       options: --user root
     services:
       db:
@@ -37,6 +38,11 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v4
+
+      # 2026-11-16 01:09 +03: tests/ is gitignored in the shipped module; the suite lives in ci_tests/ and is
+      # copied in only for the CI run, so the module zip is unchanged. Task int-backport.
+      - name: Copy test suite into the module
+        run: cp -r ci_tests/kwtsms_sms_tests kwtsms_sms/tests
 
       - name: Run module tests
         run: |
