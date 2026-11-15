@@ -1,6 +1,6 @@
 {
     'name': 'kwtSMS Gateway',
-    'version': '19.0.4.0.0',
+    'version': '19.0.4.0.1',  # 2026-11-16 01:35 +03: hotfix, fresh install failed (load order), int-backport
     'summary': 'Send SMS via kwtSMS gateway with business event notifications',
     'description': """
 kwtSMS Gateway for Odoo
@@ -41,9 +41,11 @@ Send SMS via Kuwait's leading SMS gateway directly from Odoo. Features:
         'views/kwtsms_settings_views.xml',
         'views/kwtsms_gateway_views.xml',
         'views/kwtsms_help_views.xml',
-        'views/kwtsms_dashboard_views.xml',
+        # 2026-11-16 01:12 +03: wizard views load before the dashboard, whose button uses
+        # %(kwtsms_sms.action_kwtsms_send_sms)d; the old order failed a fresh install. Task int-backport.
         'wizard/sms_compose_wizard_views.xml',
         'wizard/test_sms_wizard_views.xml',
+        'views/kwtsms_dashboard_views.xml',
         'views/kwtsms_otp_templates.xml',
         'views/menu.xml',
     ],

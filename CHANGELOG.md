@@ -8,6 +8,11 @@ with Odoo version prefix (e.g., 19.0.1.0.0).
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-11-16
+
+### Fixed
+- A fresh install failed with "External ID not found"; the module now installs on a new database.
+
 ### Changed
 - Phone examples show 965XXXXXXXX.
 - Clearer help on test mode.
