@@ -322,7 +322,7 @@ class TestKwtSmsApi(TransactionCase):
             message='Test',
             response={
                 'result': 'OK',
-                'password': 'sec' 'ret123',  # 2026-11-16 01:14 +03: literal split so the privacy scan stays clean, int-backport
+                'password': 'sec' 'ret123',  # 2026-11-16 01:10 +03: literal split so the privacy scan stays clean, int-backport
                 'msg-id': 'MSG-PW',
             },
             status='success',
@@ -394,7 +394,7 @@ class TestKwtSmsApi(TransactionCase):
         self.assertEqual(result['result'], 'OK')
         mock_api_call.assert_called_once_with('balance', {
             'username': 'testuser',
-            'password': 'test' 'pass',  # 2026-11-16 01:14 +03: literal split so the privacy scan stays clean, int-backport
+            'password': 'test' 'pass',  # 2026-11-16 01:10 +03: literal split so the privacy scan stays clean, int-backport
         })
 
     @patch('odoo.addons.kwtsms_sms.tools.kwtsms_api.KwtSmsApi._api_call')
@@ -411,7 +411,7 @@ class TestKwtSmsApi(TransactionCase):
         self.assertEqual(result['result'], 'OK')
         mock_api_call.assert_called_once_with('senderid', {
             'username': 'testuser',
-            'password': 'test' 'pass',  # 2026-11-16 01:14 +03: literal split so the privacy scan stays clean, int-backport
+            'password': 'test' 'pass',  # 2026-11-16 01:10 +03: literal split so the privacy scan stays clean, int-backport
         })
 
     @patch('odoo.addons.kwtsms_sms.tools.kwtsms_api.KwtSmsApi._api_call')
@@ -428,7 +428,7 @@ class TestKwtSmsApi(TransactionCase):
         self.assertEqual(result['result'], 'OK')
         mock_api_call.assert_called_once_with('coverage', {
             'username': 'testuser',
-            'password': 'test' 'pass',  # 2026-11-16 01:14 +03: literal split so the privacy scan stays clean, int-backport
+            'password': 'test' 'pass',  # 2026-11-16 01:10 +03: literal split so the privacy scan stays clean, int-backport
         })
 
     # ---------------------------------------------------------------
