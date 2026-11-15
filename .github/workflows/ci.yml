@@ -25,7 +25,7 @@ jobs:
     name: Odoo Tests
     runs-on: ubuntu-latest
     container:
-      image: odoo:19.0
+      image: odoo:20.0
       options: --user root
     services:
       db:

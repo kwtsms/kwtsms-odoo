@@ -209,7 +209,9 @@ class KwtSmsOtpController(http.Controller):
         """Finalize session after successful OTP and set device cookie."""
         # Finalize session (Odoo native MFA completion)
         # finalize() pops pre_uid/pre_login and sets uid on session
-        request.session.finalize(request.env)
+        # 2026-11-16 01:18 +03: Odoo 20 moved finalize() from the Session method to odoo.http.session.finalize(session, env). Task int-backport
+        from odoo.http.session import finalize
+        finalize(request.session, request.env)
 
         # Build redirect response
         response = request.redirect('/web')

@@ -8,6 +8,9 @@ with Odoo version prefix (e.g., 19.0.1.0.0).
 
 ## [Unreleased]
 
+### Added
+- Odoo 20.0 branch (20.0.4.0.0), ported from 19.0. Fixes a fresh-install failure caused by the data file order.
+
 ### Changed
 - Phone examples show 965XXXXXXXX.
 - Clearer help on test mode.
