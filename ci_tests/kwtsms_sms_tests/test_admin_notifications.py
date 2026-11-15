@@ -456,7 +456,7 @@ class TestInventoryAdminHook(TransactionCase):
             'move_ids': [(0, 0, {
                 'product_id': self.product.id,
                 'product_uom_qty': 5.0,
-                'product_uom': self.product.uom_id.id,
+                'uom_id': self.product.uom_id.id,  # 2026-11-16 01:31 +03: stock.move.product_uom is uom_id in Odoo 20. Task int-backport
                 'location_id': location_src.id,
                 'location_dest_id': location_dest.id,
             })],
@@ -478,7 +478,7 @@ class TestInventoryAdminHook(TransactionCase):
             'move_ids': [(0, 0, {
                 'product_id': self.product.id,
                 'product_uom_qty': 1.0,
-                'product_uom': self.product.uom_id.id,
+                'uom_id': self.product.uom_id.id,  # 2026-11-16 01:31 +03: stock.move.product_uom is uom_id in Odoo 20. Task int-backport
                 'location_id': location_src.id,
                 'location_dest_id': location_dest.id,
             })],
