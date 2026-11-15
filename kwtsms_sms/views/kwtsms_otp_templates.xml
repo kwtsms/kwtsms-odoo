@@ -105,7 +105,8 @@
 
     <!-- Extend login page to add phone login option -->
     <template id="kwtsms_login_phone_option" inherit_id="web.login" name="kwtSMS Phone Login">
-        <xpath expr="//div[@id='oe_structure_login_bottom']" position="inside">
+        <!-- 2026-11-16 01:22 +03: web.login in Odoo 18.0 has no oe_structure_login_bottom (added in 19); insert after the login form instead. Task int-backport -->
+        <xpath expr="//form[hasclass('oe_login_form')]" position="after">
             <t t-if="request.env['ir.config_parameter'].sudo().get_param('kwtsms.otp_passwordless', 'False') == 'True'">
                 <div class="text-center my-3">
                     <span class="text-muted">or</span>
@@ -152,7 +153,8 @@
     </template>
     <!-- Extend login page to add phone-based password reset option -->
     <template id="kwtsms_login_reset_phone" inherit_id="web.login" name="kwtSMS Phone Reset">
-        <xpath expr="//div[@id='oe_structure_login_bottom']" position="inside">
+        <!-- 2026-11-16 01:22 +03: web.login in Odoo 18.0 has no oe_structure_login_bottom (added in 19); insert after the login form instead. Task int-backport -->
+        <xpath expr="//form[hasclass('oe_login_form')]" position="after">
             <t t-if="request.env['ir.config_parameter'].sudo().get_param('kwtsms.otp_password_reset', 'False') == 'True'">
                 <div class="text-center mt-2">
                     <a href="#" onclick="document.getElementById('kwtsms_reset_form').classList.toggle('d-none'); return false;"
