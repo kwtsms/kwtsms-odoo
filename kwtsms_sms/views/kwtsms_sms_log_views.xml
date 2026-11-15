@@ -150,8 +150,8 @@
     <record id="action_kwtsms_sms_log" model="ir.actions.act_window">
         <field name="name">Logs</field>
         <field name="res_model">kwtsms.sms.log</field>
+        <!-- 2026-11-16 01:22 +03: ir.actions.act_window.path field removed, it exists only from Odoo 18. Task int-backport -->
         <field name="view_mode">tree,form,graph,pivot</field>
         <field name="context">{'search_default_filter_today': 1}</field>
-        <field name="path">kwtsms-logs</field>
     </record>
 </odoo>
