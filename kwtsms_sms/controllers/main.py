@@ -11,7 +11,8 @@ _logger = logging.getLogger(__name__)
 class KwtSmsController(http.Controller):
     """API endpoints for kwtSMS gateway operations."""
 
-    @http.route('/kwtsms/balance', type='jsonrpc', auth='user')
+    # 2026-11-16 01:18 +03: type='json' in Odoo 18 ('jsonrpc' is 19+). Task int-backport
+    @http.route('/kwtsms/balance', type='json', auth='user')
     def get_balance(self, **kwargs):
         """Get current SMS balance.
 
