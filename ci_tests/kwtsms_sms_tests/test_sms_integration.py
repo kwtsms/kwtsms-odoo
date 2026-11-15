@@ -896,7 +896,7 @@ class TestSaleOrderSmsIntegration(TransactionCase):
             'body': '\u062a\u0645 \u062a\u0623\u0643\u064a\u062f \u0637\u0644\u0628\u0643 {order_name}',
         })
 
-        # 2026-11-16: res.partner.lang only accepts installed languages in Odoo 17/18; activate ar_001 first. Task int-backport
+        # 2026-11-16 01:28 +03: res.partner.lang only accepts installed languages in Odoo 17/18; activate ar_001 first. Task int-backport
         self.env['res.lang']._activate_lang('ar_001')
         ar_partner = self.env['res.partner'].create({
             'name': 'Hessa Al-Fahad',
