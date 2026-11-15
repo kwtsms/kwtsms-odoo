@@ -1,6 +1,6 @@
 {
     'name': 'kwtSMS Gateway',
-    'version': '19.0.4.0.0',
+    'version': '17.0.4.0.0',
     'summary': 'Send SMS via kwtSMS gateway with business event notifications',
     'description': """
 kwtSMS Gateway for Odoo
@@ -41,9 +41,10 @@ Send SMS via Kuwait's leading SMS gateway directly from Odoo. Features:
         'views/kwtsms_settings_views.xml',
         'views/kwtsms_gateway_views.xml',
         'views/kwtsms_help_views.xml',
-        'views/kwtsms_dashboard_views.xml',
         'wizard/sms_compose_wizard_views.xml',
         'wizard/test_sms_wizard_views.xml',
+        # 2026-11-16 01:17 +03: dashboard loads after the wizard views: its button uses %(kwtsms_sms.action_kwtsms_send_sms)d. Task int-backport
+        'views/kwtsms_dashboard_views.xml',
         'views/kwtsms_otp_templates.xml',
         'views/menu.xml',
     ],

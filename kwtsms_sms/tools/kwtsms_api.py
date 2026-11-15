@@ -77,7 +77,8 @@ class KwtSmsApi(SmsApiBase):
     """kwtSMS gateway API client for Odoo SMS framework."""
 
     def __init__(self, env, account=None):
-        super().__init__(env, account=account)
+        # 2026-11-16 01:17 +03: Odoo 17 SmsApiBase.__init__(self, env) takes no account argument (added in 18). Task int-backport
+        super().__init__(env)
         ICP = self.env['ir.config_parameter'].sudo()
         self._username = ICP.get_param('kwtsms.api_username', '')
         self._password = ICP.get_param('kwtsms.api_password', '')
