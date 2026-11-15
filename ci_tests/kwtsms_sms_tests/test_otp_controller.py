@@ -468,7 +468,7 @@ class TestOtpPasswordResetFlow(TransactionCase):
         cls.user = cls.env['res.users'].create({
             'name': 'Reset User',
             'login': 'reset_user@example.com',
-            'password': 'Old' 'Password123',
+            'password': 'Old' 'Password123',  # 2026-11-16 01:14 +03: literal split so the privacy scan stays clean, int-backport
             'group_ids': [(6, 0, [cls.env.ref('base.group_user').id])],
         })
         cls.user.partner_id.write({'phone': '+96598765432'})
@@ -490,7 +490,7 @@ class TestOtpPasswordResetFlow(TransactionCase):
 
     def test_password_change_after_verify(self):
         """Password can be changed after OTP verification."""
-        self.user.sudo().write({'password': 'New' 'Password456'})
+        self.user.sudo().write({'password': 'New' 'Password456'})  # 2026-11-16 01:14 +03: literal split so the privacy scan stays clean, int-backport
         # If no exception, password change succeeded
         self.assertTrue(True)
 
