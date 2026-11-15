@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """Tests for Phase 4 OTP controller logic and flows."""
 
 from datetime import timedelta
@@ -21,11 +22,11 @@ class TestOtpTokenLifecycle(TransactionCase):
         super().setUpClass()
         cls.Token = cls.env['kwtsms.otp.token'].sudo()
         cls.ICP = cls.env['ir.config_parameter'].sudo()
-        cls.ICP.set_param('kwtsms.enabled', 'True')
-        cls.ICP.set_param('kwtsms.api_username', 'testuser')
-        cls.ICP.set_param('kwtsms.api_password', 'testpass')
-        cls.ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
-        cls.ICP.set_param('kwtsms.test_mode', 'True')
+        cls.ICP.set_str('kwtsms.enabled', 'True')
+        cls.ICP.set_str('kwtsms.api_username', 'testuser')
+        cls.ICP.set_str('kwtsms.api_password', 'testpass')
+        cls.ICP.set_str('kwtsms.sender_id', 'KWT-SMS')
+        cls.ICP.set_str('kwtsms.test_mode', 'True')
 
         config = cls.env['kwtsms.gateway.config']._get_or_create()
         config.write({'balance_available': 1000, 'api_status': 'connected'})

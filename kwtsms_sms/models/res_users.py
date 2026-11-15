@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """MFA hooks for SMS OTP authentication."""
 
 from odoo import models
@@ -15,16 +16,16 @@ class ResUsers(models.Model):
             return r  # Another MFA (e.g., auth_totp) takes precedence
 
         ICP = self.env['ir.config_parameter'].sudo()
-        if ICP.get_param('kwtsms.enabled', 'False') != 'True':
+        if ICP.get_str('kwtsms.enabled', 'False') != 'True':
             return r
 
         if self.has_group('base.group_user'):
             # Internal/backend user
-            if ICP.get_param('kwtsms.otp_backend_login', 'False') == 'True':
+            if ICP.get_str('kwtsms.otp_backend_login', 'False') == 'True':
                 return 'sms_otp'
         else:
             # Portal user
-            if ICP.get_param('kwtsms.otp_portal_login', 'False') == 'True':
+            if ICP.get_str('kwtsms.otp_portal_login', 'False') == 'True':
                 return 'sms_otp'
         return r
 

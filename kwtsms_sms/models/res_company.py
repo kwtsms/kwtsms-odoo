@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """Override res.company to route SMS through kwtSMS."""
 
 from odoo import models
@@ -19,8 +20,8 @@ class ResCompany(models.Model):
         """
         self.ensure_one()
         ICP = self.env['ir.config_parameter'].sudo()
-        username = ICP.get_param('kwtsms.api_username', '')
-        enabled = ICP.get_param('kwtsms.enabled', 'False') == 'True'
+        username = ICP.get_str('kwtsms.api_username', '')
+        enabled = ICP.get_str('kwtsms.enabled', 'False') == 'True'
 
         if enabled and username:
             from odoo.addons.kwtsms_sms.tools.kwtsms_api import KwtSmsApi

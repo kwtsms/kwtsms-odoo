@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """SMS Sender for sending SMS directly from records."""
 
 import logging
@@ -52,7 +53,7 @@ class KwtSmsComposeWizard(models.TransientModel):
     )
     test_mode = fields.Boolean(
         string='Test Mode',
-        default=lambda self: self.env['ir.config_parameter'].sudo().get_param(
+        default=lambda self: self.env['ir.config_parameter'].sudo().get_str(
             'kwtsms.test_mode', 'True') == 'True',
     )
 

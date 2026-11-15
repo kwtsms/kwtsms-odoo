@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """Shared SMS notification logic for admin event hooks."""
 
 import logging
@@ -37,14 +38,14 @@ class KwtSmsAdminNotificationMixin(models.AbstractModel):
         """
         ICP = self.env['ir.config_parameter'].sudo()
 
-        if ICP.get_param('kwtsms.enabled', 'False') != 'True':
+        if ICP.get_str('kwtsms.enabled', 'False') != 'True':
             return
-        if ICP.get_param(config_key, 'False') != 'True':
+        if ICP.get_str(config_key, 'False') != 'True':
             return
 
         phone = (
-            ICP.get_param(app_override_key, '')
-            or ICP.get_param('kwtsms.admin_phone', '')
+            ICP.get_str(app_override_key, '')
+            or ICP.get_str('kwtsms.admin_phone', '')
         )
         if not phone:
             _logger.info(

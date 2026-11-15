@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """kwtSMS Gateway Configuration model."""
 
 import json
@@ -302,54 +303,54 @@ class KwtSmsGatewayConfig(models.Model):
     def _compute_cfg_general(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            record.cfg_enabled = ICP.get_param('kwtsms.enabled', 'True') == 'True'
-            record.cfg_test_mode = ICP.get_param('kwtsms.test_mode', 'True') == 'True'
-            record.cfg_default_country_code = ICP.get_param('kwtsms.default_country_code', '965') or '965'
-            record.cfg_log_retention_days = int(ICP.get_param('kwtsms.log_retention_days', '90'))
+            record.cfg_enabled = ICP.get_str('kwtsms.enabled', 'True') == 'True'
+            record.cfg_test_mode = ICP.get_str('kwtsms.test_mode', 'True') == 'True'
+            record.cfg_default_country_code = ICP.get_str('kwtsms.default_country_code', '965') or '965'
+            record.cfg_log_retention_days = int(ICP.get_str('kwtsms.log_retention_days', '90'))
 
     def _compute_cfg_credentials(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            record.cfg_api_username = ICP.get_param('kwtsms.api_username', '')
-            record.cfg_api_password = ICP.get_param('kwtsms.api_password', '')
-            record.cfg_sender_id = ICP.get_param('kwtsms.sender_id', 'KWT-SMS') or 'KWT-SMS'
+            record.cfg_api_username = ICP.get_str('kwtsms.api_username', '')
+            record.cfg_api_password = ICP.get_str('kwtsms.api_password', '')
+            record.cfg_sender_id = ICP.get_str('kwtsms.sender_id', 'KWT-SMS') or 'KWT-SMS'
 
     def _compute_cfg_toggles(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            record.cfg_auto_order_confirm = ICP.get_param('kwtsms.auto_order_confirm', 'True') == 'True'
-            record.cfg_auto_delivery_done = ICP.get_param('kwtsms.auto_delivery_done', 'False') == 'True'
-            record.cfg_auto_order_cancel = ICP.get_param('kwtsms.auto_order_cancel', 'False') == 'True'
-            record.cfg_auto_invoice_posted = ICP.get_param('kwtsms.auto_invoice_posted', 'False') == 'True'
-            record.cfg_auto_payment_received = ICP.get_param('kwtsms.auto_payment_received', 'False') == 'True'
+            record.cfg_auto_order_confirm = ICP.get_str('kwtsms.auto_order_confirm', 'True') == 'True'
+            record.cfg_auto_delivery_done = ICP.get_str('kwtsms.auto_delivery_done', 'False') == 'True'
+            record.cfg_auto_order_cancel = ICP.get_str('kwtsms.auto_order_cancel', 'False') == 'True'
+            record.cfg_auto_invoice_posted = ICP.get_str('kwtsms.auto_invoice_posted', 'False') == 'True'
+            record.cfg_auto_payment_received = ICP.get_str('kwtsms.auto_payment_received', 'False') == 'True'
 
     def _compute_cfg_admin_phones(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            record.cfg_admin_phone = ICP.get_param('kwtsms.admin_phone', '')
-            record.cfg_admin_phone_sales = ICP.get_param('kwtsms.admin_phone_sales', '')
-            record.cfg_admin_phone_inventory = ICP.get_param('kwtsms.admin_phone_inventory', '')
-            record.cfg_admin_phone_accounting = ICP.get_param('kwtsms.admin_phone_accounting', '')
-            record.cfg_admin_phone_crm = ICP.get_param('kwtsms.admin_phone_crm', '')
+            record.cfg_admin_phone = ICP.get_str('kwtsms.admin_phone', '')
+            record.cfg_admin_phone_sales = ICP.get_str('kwtsms.admin_phone_sales', '')
+            record.cfg_admin_phone_inventory = ICP.get_str('kwtsms.admin_phone_inventory', '')
+            record.cfg_admin_phone_accounting = ICP.get_str('kwtsms.admin_phone_accounting', '')
+            record.cfg_admin_phone_crm = ICP.get_str('kwtsms.admin_phone_crm', '')
 
     def _compute_cfg_admin_toggles(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            record.cfg_auto_admin_new_quotation = ICP.get_param('kwtsms.auto_admin_new_quotation', 'False') == 'True'
-            record.cfg_auto_admin_order_cancelled = ICP.get_param('kwtsms.auto_admin_order_cancelled', 'False') == 'True'
-            record.cfg_auto_admin_large_order = ICP.get_param('kwtsms.auto_admin_large_order', 'False') == 'True'
-            record.cfg_auto_admin_low_stock = ICP.get_param('kwtsms.auto_admin_low_stock', 'False') == 'True'
-            record.cfg_auto_admin_incoming_shipment = ICP.get_param('kwtsms.auto_admin_incoming_shipment', 'False') == 'True'
-            record.cfg_auto_admin_payment_received = ICP.get_param('kwtsms.auto_admin_payment_received', 'False') == 'True'
-            record.cfg_auto_admin_invoice_overdue = ICP.get_param('kwtsms.auto_admin_invoice_overdue', 'False') == 'True'
-            record.cfg_auto_admin_new_lead = ICP.get_param('kwtsms.auto_admin_new_lead', 'False') == 'True'
-            record.cfg_auto_admin_lead_stage_changed = ICP.get_param('kwtsms.auto_admin_lead_stage_changed', 'False') == 'True'
+            record.cfg_auto_admin_new_quotation = ICP.get_str('kwtsms.auto_admin_new_quotation', 'False') == 'True'
+            record.cfg_auto_admin_order_cancelled = ICP.get_str('kwtsms.auto_admin_order_cancelled', 'False') == 'True'
+            record.cfg_auto_admin_large_order = ICP.get_str('kwtsms.auto_admin_large_order', 'False') == 'True'
+            record.cfg_auto_admin_low_stock = ICP.get_str('kwtsms.auto_admin_low_stock', 'False') == 'True'
+            record.cfg_auto_admin_incoming_shipment = ICP.get_str('kwtsms.auto_admin_incoming_shipment', 'False') == 'True'
+            record.cfg_auto_admin_payment_received = ICP.get_str('kwtsms.auto_admin_payment_received', 'False') == 'True'
+            record.cfg_auto_admin_invoice_overdue = ICP.get_str('kwtsms.auto_admin_invoice_overdue', 'False') == 'True'
+            record.cfg_auto_admin_new_lead = ICP.get_str('kwtsms.auto_admin_new_lead', 'False') == 'True'
+            record.cfg_auto_admin_lead_stage_changed = ICP.get_str('kwtsms.auto_admin_lead_stage_changed', 'False') == 'True'
 
     def _compute_cfg_admin_thresholds(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            record.cfg_large_order_threshold = float(ICP.get_param('kwtsms.large_order_threshold', '1000'))
-            record.cfg_overdue_invoice_days = int(ICP.get_param('kwtsms.overdue_invoice_days', '30'))
+            record.cfg_large_order_threshold = float(ICP.get_str('kwtsms.large_order_threshold', '1000'))
+            record.cfg_overdue_invoice_days = int(ICP.get_str('kwtsms.overdue_invoice_days', '30'))
 
     def _compute_has_crm_module(self):
         installed = bool(self.env['ir.module.module'].sudo().search([
@@ -361,27 +362,27 @@ class KwtSmsGatewayConfig(models.Model):
     def _compute_cfg_otp(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            record.cfg_otp_mode = ICP.get_param('kwtsms.otp_mode', '2fa') or '2fa'
-            record.cfg_otp_length = int(ICP.get_param('kwtsms.otp_length', '6'))
-            record.cfg_otp_expiry_minutes = int(ICP.get_param('kwtsms.otp_expiry_minutes', '5'))
+            record.cfg_otp_mode = ICP.get_str('kwtsms.otp_mode', '2fa') or '2fa'
+            record.cfg_otp_length = int(ICP.get_str('kwtsms.otp_length', '6'))
+            record.cfg_otp_expiry_minutes = int(ICP.get_str('kwtsms.otp_expiry_minutes', '5'))
 
     def _compute_cfg_otp_toggles(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            record.cfg_otp_portal_login = ICP.get_param('kwtsms.otp_portal_login', 'False') == 'True'
-            record.cfg_otp_backend_login = ICP.get_param('kwtsms.otp_backend_login', 'False') == 'True'
-            record.cfg_otp_passwordless = ICP.get_param('kwtsms.otp_passwordless', 'False') == 'True'
-            record.cfg_otp_signup = ICP.get_param('kwtsms.otp_signup', 'False') == 'True'
-            record.cfg_otp_password_reset = ICP.get_param('kwtsms.otp_password_reset', 'False') == 'True'
+            record.cfg_otp_portal_login = ICP.get_str('kwtsms.otp_portal_login', 'False') == 'True'
+            record.cfg_otp_backend_login = ICP.get_str('kwtsms.otp_backend_login', 'False') == 'True'
+            record.cfg_otp_passwordless = ICP.get_str('kwtsms.otp_passwordless', 'False') == 'True'
+            record.cfg_otp_signup = ICP.get_str('kwtsms.otp_signup', 'False') == 'True'
+            record.cfg_otp_password_reset = ICP.get_str('kwtsms.otp_password_reset', 'False') == 'True'
 
     def _compute_cfg_otp_security(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            record.cfg_otp_max_attempts = int(ICP.get_param('kwtsms.otp_max_attempts', '3'))
-            record.cfg_otp_lockout_minutes = int(ICP.get_param('kwtsms.otp_lockout_minutes', '15'))
-            record.cfg_otp_cooldown_seconds = int(ICP.get_param('kwtsms.otp_cooldown_seconds', '60'))
-            record.cfg_otp_ip_daily_limit = int(ICP.get_param('kwtsms.otp_ip_daily_limit', '10'))
-            record.cfg_otp_remember_days = int(ICP.get_param('kwtsms.otp_remember_days', '30'))
+            record.cfg_otp_max_attempts = int(ICP.get_str('kwtsms.otp_max_attempts', '3'))
+            record.cfg_otp_lockout_minutes = int(ICP.get_str('kwtsms.otp_lockout_minutes', '15'))
+            record.cfg_otp_cooldown_seconds = int(ICP.get_str('kwtsms.otp_cooldown_seconds', '60'))
+            record.cfg_otp_ip_daily_limit = int(ICP.get_str('kwtsms.otp_ip_daily_limit', '10'))
+            record.cfg_otp_remember_days = int(ICP.get_str('kwtsms.otp_remember_days', '30'))
 
     # ═══════════════════════════════════════
     # Inverse methods (write back to ir.config_parameter)
@@ -390,207 +391,207 @@ class KwtSmsGatewayConfig(models.Model):
     def _inverse_cfg_enabled(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.enabled', 'True' if record.cfg_enabled else 'False')
+            ICP.set_str('kwtsms.enabled', 'True' if record.cfg_enabled else 'False')
 
     def _inverse_cfg_test_mode(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.test_mode', 'True' if record.cfg_test_mode else 'False')
+            ICP.set_str('kwtsms.test_mode', 'True' if record.cfg_test_mode else 'False')
 
     def _inverse_cfg_api_username(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.api_username', record.cfg_api_username or '')
+            ICP.set_str('kwtsms.api_username', record.cfg_api_username or '')
 
     def _inverse_cfg_api_password(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.api_password', record.cfg_api_password or '')
+            ICP.set_str('kwtsms.api_password', record.cfg_api_password or '')
 
     def _inverse_cfg_sender_id(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.sender_id', record.cfg_sender_id or 'KWT-SMS')
+            ICP.set_str('kwtsms.sender_id', record.cfg_sender_id or 'KWT-SMS')
 
     def _inverse_cfg_default_country_code(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.default_country_code', record.cfg_default_country_code or '965')
+            ICP.set_str('kwtsms.default_country_code', record.cfg_default_country_code or '965')
 
     def _inverse_cfg_log_retention_days(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.log_retention_days', str(record.cfg_log_retention_days or 90))
+            ICP.set_str('kwtsms.log_retention_days', str(record.cfg_log_retention_days or 90))
 
     def _inverse_cfg_auto_order_confirm(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.auto_order_confirm', 'True' if record.cfg_auto_order_confirm else 'False')
+            ICP.set_str('kwtsms.auto_order_confirm', 'True' if record.cfg_auto_order_confirm else 'False')
 
     def _inverse_cfg_auto_delivery_done(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.auto_delivery_done', 'True' if record.cfg_auto_delivery_done else 'False')
+            ICP.set_str('kwtsms.auto_delivery_done', 'True' if record.cfg_auto_delivery_done else 'False')
 
     def _inverse_cfg_auto_order_cancel(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.auto_order_cancel', 'True' if record.cfg_auto_order_cancel else 'False')
+            ICP.set_str('kwtsms.auto_order_cancel', 'True' if record.cfg_auto_order_cancel else 'False')
 
     def _inverse_cfg_auto_invoice_posted(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.auto_invoice_posted', 'True' if record.cfg_auto_invoice_posted else 'False')
+            ICP.set_str('kwtsms.auto_invoice_posted', 'True' if record.cfg_auto_invoice_posted else 'False')
 
     def _inverse_cfg_auto_payment_received(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.auto_payment_received', 'True' if record.cfg_auto_payment_received else 'False')
+            ICP.set_str('kwtsms.auto_payment_received', 'True' if record.cfg_auto_payment_received else 'False')
 
     def _inverse_cfg_admin_phone(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.admin_phone', record.cfg_admin_phone or '')
+            ICP.set_str('kwtsms.admin_phone', record.cfg_admin_phone or '')
 
     def _inverse_cfg_admin_phone_sales(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.admin_phone_sales', record.cfg_admin_phone_sales or '')
+            ICP.set_str('kwtsms.admin_phone_sales', record.cfg_admin_phone_sales or '')
 
     def _inverse_cfg_admin_phone_inventory(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.admin_phone_inventory', record.cfg_admin_phone_inventory or '')
+            ICP.set_str('kwtsms.admin_phone_inventory', record.cfg_admin_phone_inventory or '')
 
     def _inverse_cfg_admin_phone_accounting(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.admin_phone_accounting', record.cfg_admin_phone_accounting or '')
+            ICP.set_str('kwtsms.admin_phone_accounting', record.cfg_admin_phone_accounting or '')
 
     def _inverse_cfg_admin_phone_crm(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.admin_phone_crm', record.cfg_admin_phone_crm or '')
+            ICP.set_str('kwtsms.admin_phone_crm', record.cfg_admin_phone_crm or '')
 
     def _inverse_cfg_auto_admin_new_quotation(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.auto_admin_new_quotation', 'True' if record.cfg_auto_admin_new_quotation else 'False')
+            ICP.set_str('kwtsms.auto_admin_new_quotation', 'True' if record.cfg_auto_admin_new_quotation else 'False')
 
     def _inverse_cfg_auto_admin_order_cancelled(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.auto_admin_order_cancelled', 'True' if record.cfg_auto_admin_order_cancelled else 'False')
+            ICP.set_str('kwtsms.auto_admin_order_cancelled', 'True' if record.cfg_auto_admin_order_cancelled else 'False')
 
     def _inverse_cfg_auto_admin_large_order(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.auto_admin_large_order', 'True' if record.cfg_auto_admin_large_order else 'False')
+            ICP.set_str('kwtsms.auto_admin_large_order', 'True' if record.cfg_auto_admin_large_order else 'False')
 
     def _inverse_cfg_auto_admin_low_stock(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.auto_admin_low_stock', 'True' if record.cfg_auto_admin_low_stock else 'False')
+            ICP.set_str('kwtsms.auto_admin_low_stock', 'True' if record.cfg_auto_admin_low_stock else 'False')
 
     def _inverse_cfg_auto_admin_incoming_shipment(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.auto_admin_incoming_shipment', 'True' if record.cfg_auto_admin_incoming_shipment else 'False')
+            ICP.set_str('kwtsms.auto_admin_incoming_shipment', 'True' if record.cfg_auto_admin_incoming_shipment else 'False')
 
     def _inverse_cfg_auto_admin_payment_received(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.auto_admin_payment_received', 'True' if record.cfg_auto_admin_payment_received else 'False')
+            ICP.set_str('kwtsms.auto_admin_payment_received', 'True' if record.cfg_auto_admin_payment_received else 'False')
 
     def _inverse_cfg_auto_admin_invoice_overdue(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.auto_admin_invoice_overdue', 'True' if record.cfg_auto_admin_invoice_overdue else 'False')
+            ICP.set_str('kwtsms.auto_admin_invoice_overdue', 'True' if record.cfg_auto_admin_invoice_overdue else 'False')
 
     def _inverse_cfg_auto_admin_new_lead(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.auto_admin_new_lead', 'True' if record.cfg_auto_admin_new_lead else 'False')
+            ICP.set_str('kwtsms.auto_admin_new_lead', 'True' if record.cfg_auto_admin_new_lead else 'False')
 
     def _inverse_cfg_auto_admin_lead_stage_changed(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.auto_admin_lead_stage_changed', 'True' if record.cfg_auto_admin_lead_stage_changed else 'False')
+            ICP.set_str('kwtsms.auto_admin_lead_stage_changed', 'True' if record.cfg_auto_admin_lead_stage_changed else 'False')
 
     def _inverse_cfg_large_order_threshold(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.large_order_threshold', str(record.cfg_large_order_threshold or 1000))
+            ICP.set_str('kwtsms.large_order_threshold', str(record.cfg_large_order_threshold or 1000))
 
     def _inverse_cfg_overdue_invoice_days(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.overdue_invoice_days', str(record.cfg_overdue_invoice_days or 30))
+            ICP.set_str('kwtsms.overdue_invoice_days', str(record.cfg_overdue_invoice_days or 30))
 
     def _inverse_cfg_otp_mode(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.otp_mode', record.cfg_otp_mode or '2fa')
+            ICP.set_str('kwtsms.otp_mode', record.cfg_otp_mode or '2fa')
 
     def _inverse_cfg_otp_length(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.otp_length', str(record.cfg_otp_length or 6))
+            ICP.set_str('kwtsms.otp_length', str(record.cfg_otp_length or 6))
 
     def _inverse_cfg_otp_expiry_minutes(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.otp_expiry_minutes', str(record.cfg_otp_expiry_minutes or 5))
+            ICP.set_str('kwtsms.otp_expiry_minutes', str(record.cfg_otp_expiry_minutes or 5))
 
     def _inverse_cfg_otp_portal_login(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.otp_portal_login', 'True' if record.cfg_otp_portal_login else 'False')
+            ICP.set_str('kwtsms.otp_portal_login', 'True' if record.cfg_otp_portal_login else 'False')
 
     def _inverse_cfg_otp_backend_login(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.otp_backend_login', 'True' if record.cfg_otp_backend_login else 'False')
+            ICP.set_str('kwtsms.otp_backend_login', 'True' if record.cfg_otp_backend_login else 'False')
 
     def _inverse_cfg_otp_passwordless(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.otp_passwordless', 'True' if record.cfg_otp_passwordless else 'False')
+            ICP.set_str('kwtsms.otp_passwordless', 'True' if record.cfg_otp_passwordless else 'False')
 
     def _inverse_cfg_otp_signup(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.otp_signup', 'True' if record.cfg_otp_signup else 'False')
+            ICP.set_str('kwtsms.otp_signup', 'True' if record.cfg_otp_signup else 'False')
 
     def _inverse_cfg_otp_password_reset(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.otp_password_reset', 'True' if record.cfg_otp_password_reset else 'False')
+            ICP.set_str('kwtsms.otp_password_reset', 'True' if record.cfg_otp_password_reset else 'False')
 
     def _inverse_cfg_otp_max_attempts(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.otp_max_attempts', str(record.cfg_otp_max_attempts or 3))
+            ICP.set_str('kwtsms.otp_max_attempts', str(record.cfg_otp_max_attempts or 3))
 
     def _inverse_cfg_otp_lockout_minutes(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.otp_lockout_minutes', str(record.cfg_otp_lockout_minutes or 15))
+            ICP.set_str('kwtsms.otp_lockout_minutes', str(record.cfg_otp_lockout_minutes or 15))
 
     def _inverse_cfg_otp_cooldown_seconds(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.otp_cooldown_seconds', str(record.cfg_otp_cooldown_seconds or 60))
+            ICP.set_str('kwtsms.otp_cooldown_seconds', str(record.cfg_otp_cooldown_seconds or 60))
 
     def _inverse_cfg_otp_ip_daily_limit(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.otp_ip_daily_limit', str(record.cfg_otp_ip_daily_limit or 10))
+            ICP.set_str('kwtsms.otp_ip_daily_limit', str(record.cfg_otp_ip_daily_limit or 10))
 
     def _inverse_cfg_otp_remember_days(self):
         ICP = self.env['ir.config_parameter'].sudo()
         for record in self:
-            ICP.set_param('kwtsms.otp_remember_days', str(record.cfg_otp_remember_days or 30))
+            ICP.set_str('kwtsms.otp_remember_days', str(record.cfg_otp_remember_days or 30))
 
     # ═══════════════════════════════════════
     # Selection builders
@@ -612,7 +613,7 @@ class KwtSmsGatewayConfig(models.Model):
         except Exception as e:
             _logger.warning('kwtSMS: Could not load coverage prefixes: %s', e)
         ICP = self.env['ir.config_parameter'].sudo()
-        current = ICP.get_param('kwtsms.default_country_code', '965')
+        current = ICP.get_str('kwtsms.default_country_code', '965')
         if current and current not in {r[0] for r in result}:
             result.append((current, current))
         return result
@@ -632,7 +633,7 @@ class KwtSmsGatewayConfig(models.Model):
         except Exception as e:
             _logger.warning('kwtSMS: Could not load sender IDs: %s', e)
         ICP = self.env['ir.config_parameter'].sudo()
-        current = ICP.get_param('kwtsms.sender_id', '')
+        current = ICP.get_str('kwtsms.sender_id', '')
         if current and current not in {r[0] for r in result}:
             result.append((current, current))
         return result
@@ -738,7 +739,7 @@ class KwtSmsGatewayConfig(models.Model):
 
         for record in self:
             company_domain = [('company_id', '=', record.company_id.id)]
-            record.current_sender = ICP.get_param('kwtsms.sender_id', 'KWT-SMS')
+            record.current_sender = ICP.get_str('kwtsms.sender_id', 'KWT-SMS')
             record.sms_today = SmsLog.search_count(company_domain + [
                 ('create_date', '>=', today_start),
                 ('status', 'in', ['success', 'test']),
@@ -769,9 +770,9 @@ class KwtSmsGatewayConfig(models.Model):
         if self.api_status == 'connected':
             ICP = self.env['ir.config_parameter'].sudo()
             sender_list = self.get_sender_id_list()
-            current = ICP.get_param('kwtsms.sender_id', '')
+            current = ICP.get_str('kwtsms.sender_id', '')
             if sender_list and (not current or current == 'KWT-SMS'):
-                ICP.set_param('kwtsms.sender_id', sender_list[0])
+                ICP.set_str('kwtsms.sender_id', sender_list[0])
 
         return {
             'type': 'ir.actions.client',
@@ -786,8 +787,8 @@ class KwtSmsGatewayConfig(models.Model):
         """
         self.ensure_one()
         ICP = self.env['ir.config_parameter'].sudo()
-        username = ICP.get_param('kwtsms.api_username', '')
-        password = ICP.get_param('kwtsms.api_password', '')
+        username = ICP.get_str('kwtsms.api_username', '')
+        password = ICP.get_str('kwtsms.api_password', '')
         if not username or not password:
             self.write({
                 'api_status': 'not_configured',
@@ -846,9 +847,9 @@ class KwtSmsGatewayConfig(models.Model):
     def action_logout(self):
         """Log out: clear credentials and reset gateway state."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.api_username', '')
-        ICP.set_param('kwtsms.api_password', '')
-        ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
+        ICP.set_str('kwtsms.api_username', '')
+        ICP.set_str('kwtsms.api_password', '')
+        ICP.set_str('kwtsms.sender_id', 'KWT-SMS')
 
         self.ensure_one()
         self.write({
@@ -869,8 +870,8 @@ class KwtSmsGatewayConfig(models.Model):
         """Refresh dashboard data by re-verifying credentials and fetching latest data."""
         self.ensure_one()
         ICP = self.env['ir.config_parameter'].sudo()
-        username = ICP.get_param('kwtsms.api_username', '')
-        password = ICP.get_param('kwtsms.api_password', '')
+        username = ICP.get_str('kwtsms.api_username', '')
+        password = ICP.get_str('kwtsms.api_password', '')
         if not username or not password:
             self.write({
                 'api_status': 'not_configured',
@@ -1100,9 +1101,9 @@ class KwtSmsGatewayConfig(models.Model):
     def _cron_admin_low_stock_alert(self):
         """Daily cron: send admin SMS summary of products below reorder level."""
         ICP = self.env['ir.config_parameter'].sudo()
-        if ICP.get_param('kwtsms.enabled', 'False') != 'True':
+        if ICP.get_str('kwtsms.enabled', 'False') != 'True':
             return
-        if ICP.get_param('kwtsms.auto_admin_low_stock', 'False') != 'True':
+        if ICP.get_str('kwtsms.auto_admin_low_stock', 'False') != 'True':
             return
 
         Orderpoint = self.env['stock.warehouse.orderpoint'].sudo()
@@ -1144,8 +1145,8 @@ class KwtSmsGatewayConfig(models.Model):
         }
 
         phone = (
-            ICP.get_param('kwtsms.admin_phone_inventory', '')
-            or ICP.get_param('kwtsms.admin_phone', '')
+            ICP.get_str('kwtsms.admin_phone_inventory', '')
+            or ICP.get_str('kwtsms.admin_phone', '')
         )
         if not phone:
             _logger.info('kwtSMS: No admin phone for low stock alert, skipping')
@@ -1166,12 +1167,12 @@ class KwtSmsGatewayConfig(models.Model):
     def _cron_admin_overdue_invoices(self):
         """Daily cron: send admin SMS summary of overdue customer invoices."""
         ICP = self.env['ir.config_parameter'].sudo()
-        if ICP.get_param('kwtsms.enabled', 'False') != 'True':
+        if ICP.get_str('kwtsms.enabled', 'False') != 'True':
             return
-        if ICP.get_param('kwtsms.auto_admin_invoice_overdue', 'False') != 'True':
+        if ICP.get_str('kwtsms.auto_admin_invoice_overdue', 'False') != 'True':
             return
 
-        days = int(ICP.get_param('kwtsms.overdue_invoice_days', '30'))
+        days = int(ICP.get_str('kwtsms.overdue_invoice_days', '30'))
         cutoff = fields.Date.today() - timedelta(days=days)
 
         invoices = self.env['account.move'].sudo().search([
@@ -1213,8 +1214,8 @@ class KwtSmsGatewayConfig(models.Model):
         }
 
         phone = (
-            ICP.get_param('kwtsms.admin_phone_accounting', '')
-            or ICP.get_param('kwtsms.admin_phone', '')
+            ICP.get_str('kwtsms.admin_phone_accounting', '')
+            or ICP.get_str('kwtsms.admin_phone', '')
         )
         if not phone:
             _logger.info('kwtSMS: No admin phone for overdue invoices, skipping')
@@ -1239,7 +1240,7 @@ class KwtSmsGatewayConfig(models.Model):
         Skips entirely when the gateway is disabled.
         """
         ICP = self.env['ir.config_parameter'].sudo()
-        if ICP.get_param('kwtsms.enabled', 'True') != 'True':
+        if ICP.get_str('kwtsms.enabled', 'True') != 'True':
             _logger.debug('kwtSMS cron: gateway disabled, skipping refresh.')
             return
 

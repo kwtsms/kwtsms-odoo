@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """End-to-end tests using the real kwtSMS API with test=1.
 
 All tests hit the real kwtSMS API. test_mode is always ON so messages
@@ -29,13 +30,13 @@ class TestRealApiDirect(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         ICP = cls.env['ir.config_parameter'].sudo()
-        cls.username = ICP.get_param('kwtsms.api_username', '')
-        cls.password = ICP.get_param('kwtsms.api_password', '')
+        cls.username = ICP.get_str('kwtsms.api_username', '')
+        cls.password = ICP.get_str('kwtsms.api_password', '')
         if not cls.username or not cls.password:
             _logger.warning('Skipping E2E tests: no kwtSMS credentials configured')
         # Ensure test mode ON
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
 
     def _skip_if_no_creds(self):
         if not TEST_PHONE:
@@ -149,12 +150,12 @@ class TestRealApiSaleOrderHook(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         ICP = cls.env['ir.config_parameter'].sudo()
-        cls.username = ICP.get_param('kwtsms.api_username', '')
-        cls.password = ICP.get_param('kwtsms.api_password', '')
+        cls.username = ICP.get_str('kwtsms.api_username', '')
+        cls.password = ICP.get_str('kwtsms.api_password', '')
         # Ensure enabled + test mode + auto order confirm
-        ICP.set_param('kwtsms.enabled', 'True')
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.auto_order_confirm', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.auto_order_confirm', 'True')
 
     def _skip_if_no_creds(self):
         if not TEST_PHONE:
@@ -234,11 +235,11 @@ class TestRealApiDeliveryHook(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         ICP = cls.env['ir.config_parameter'].sudo()
-        cls.username = ICP.get_param('kwtsms.api_username', '')
-        cls.password = ICP.get_param('kwtsms.api_password', '')
-        ICP.set_param('kwtsms.enabled', 'True')
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.auto_delivery_done', 'True')
+        cls.username = ICP.get_str('kwtsms.api_username', '')
+        cls.password = ICP.get_str('kwtsms.api_password', '')
+        ICP.set_str('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.auto_delivery_done', 'True')
 
     def _skip_if_no_creds(self):
         if not TEST_PHONE:
@@ -335,24 +336,24 @@ class TestTestModeToggle(TransactionCase):
     def test_01_toggle_test_mode_off(self):
         """Uncheck test mode and verify database value changes to 'False'."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.test_mode', 'True')
 
         gw = self._get_gateway()
         gw.cfg_test_mode = False
 
-        value = ICP.get_param('kwtsms.test_mode')
+        value = ICP.get_str('kwtsms.test_mode')
         self.assertEqual(value, 'False',
                          'kwtsms.test_mode should be "False" after unchecking')
 
     def test_02_toggle_test_mode_on(self):
         """Check test mode back ON and verify database value changes to 'True'."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.test_mode', 'False')
+        ICP.set_str('kwtsms.test_mode', 'False')
 
         gw = self._get_gateway()
         gw.cfg_test_mode = True
 
-        value = ICP.get_param('kwtsms.test_mode')
+        value = ICP.get_str('kwtsms.test_mode')
         self.assertEqual(value, 'True',
                          'kwtsms.test_mode should be "True" after checking')
 
@@ -361,14 +362,14 @@ class TestTestModeToggle(TransactionCase):
         ICP = self.env['ir.config_parameter'].sudo()
 
         # OFF
-        ICP.set_param('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
         gw = self._get_gateway()
         gw.cfg_enabled = False
-        self.assertEqual(ICP.get_param('kwtsms.enabled'), 'False')
+        self.assertEqual(ICP.get_str('kwtsms.enabled'), 'False')
 
         # ON
         gw.cfg_enabled = True
-        self.assertEqual(ICP.get_param('kwtsms.enabled'), 'True')
+        self.assertEqual(ICP.get_str('kwtsms.enabled'), 'True')
 
     def test_04_toggle_auto_order_confirm(self):
         """Toggle auto_order_confirm and verify database."""
@@ -376,10 +377,10 @@ class TestTestModeToggle(TransactionCase):
 
         gw = self._get_gateway()
         gw.cfg_auto_order_confirm = False
-        self.assertEqual(ICP.get_param('kwtsms.auto_order_confirm'), 'False')
+        self.assertEqual(ICP.get_str('kwtsms.auto_order_confirm'), 'False')
 
         gw.cfg_auto_order_confirm = True
-        self.assertEqual(ICP.get_param('kwtsms.auto_order_confirm'), 'True')
+        self.assertEqual(ICP.get_str('kwtsms.auto_order_confirm'), 'True')
 
     def test_05_toggle_auto_delivery_done(self):
         """Toggle auto_delivery_done and verify database."""
@@ -387,14 +388,14 @@ class TestTestModeToggle(TransactionCase):
 
         gw = self._get_gateway()
         gw.cfg_auto_delivery_done = True
-        self.assertEqual(ICP.get_param('kwtsms.auto_delivery_done'), 'True')
+        self.assertEqual(ICP.get_str('kwtsms.auto_delivery_done'), 'True')
 
         gw.cfg_auto_delivery_done = False
-        self.assertEqual(ICP.get_param('kwtsms.auto_delivery_done'), 'False')
+        self.assertEqual(ICP.get_str('kwtsms.auto_delivery_done'), 'False')
 
     def test_06_ensure_test_mode_stays_on(self):
         """Verify test mode is ON after all tests (safety check)."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.test_mode', 'True')
-        value = ICP.get_param('kwtsms.test_mode')
+        ICP.set_str('kwtsms.test_mode', 'True')
+        value = ICP.get_str('kwtsms.test_mode')
         self.assertEqual(value, 'True')

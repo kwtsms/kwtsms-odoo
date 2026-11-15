@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """Comprehensive E2E edge-case tests against the real kwtSMS API.
 
 Covers phone normalization, validation, message cleaning, template rendering,
@@ -35,9 +36,9 @@ class TestPhoneNormalizationE2E(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         ICP = cls.env['ir.config_parameter'].sudo()
-        cls.has_creds = bool(ICP.get_param('kwtsms.api_username', ''))
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.enabled', 'True')
+        cls.has_creds = bool(ICP.get_str('kwtsms.api_username', ''))
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
 
     def _skip_if_no_creds(self):
         if not TEST_PHONE:
@@ -161,9 +162,9 @@ class TestPhoneValidationErrorsE2E(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         ICP = cls.env['ir.config_parameter'].sudo()
-        cls.has_creds = bool(ICP.get_param('kwtsms.api_username', ''))
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.enabled', 'True')
+        cls.has_creds = bool(ICP.get_str('kwtsms.api_username', ''))
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
 
     def _skip_if_no_creds(self):
         if not TEST_PHONE:
@@ -245,9 +246,9 @@ class TestPhoneValidationErrorLogging(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         ICP = cls.env['ir.config_parameter'].sudo()
-        cls.has_creds = bool(ICP.get_param('kwtsms.api_username', ''))
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.enabled', 'True')
+        cls.has_creds = bool(ICP.get_str('kwtsms.api_username', ''))
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
 
     def _skip_if_no_creds(self):
         if not TEST_PHONE:
@@ -343,9 +344,9 @@ class TestMessageCleaningE2E(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         ICP = cls.env['ir.config_parameter'].sudo()
-        cls.has_creds = bool(ICP.get_param('kwtsms.api_username', ''))
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.enabled', 'True')
+        cls.has_creds = bool(ICP.get_str('kwtsms.api_username', ''))
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
 
     def _skip_if_no_creds(self):
         if not TEST_PHONE:
@@ -461,9 +462,9 @@ class TestApiErrorLogging(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         ICP = cls.env['ir.config_parameter'].sudo()
-        cls.has_creds = bool(ICP.get_param('kwtsms.api_username', ''))
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.enabled', 'True')
+        cls.has_creds = bool(ICP.get_str('kwtsms.api_username', ''))
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
 
     def _skip_if_no_creds(self):
         if not TEST_PHONE:
@@ -527,10 +528,10 @@ class TestTemplateRenderingE2E(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         ICP = cls.env['ir.config_parameter'].sudo()
-        cls.has_creds = bool(ICP.get_param('kwtsms.api_username', ''))
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.enabled', 'True')
-        ICP.set_param('kwtsms.auto_order_confirm', 'True')
+        cls.has_creds = bool(ICP.get_str('kwtsms.api_username', ''))
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.auto_order_confirm', 'True')
 
     def _skip_if_no_creds(self):
         if not TEST_PHONE:
@@ -660,9 +661,9 @@ class TestSendSmsBatchEdgeCases(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         ICP = cls.env['ir.config_parameter'].sudo()
-        cls.has_creds = bool(ICP.get_param('kwtsms.api_username', ''))
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.enabled', 'True')
+        cls.has_creds = bool(ICP.get_str('kwtsms.api_username', ''))
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
 
     def _skip_if_no_creds(self):
         if not TEST_PHONE:
@@ -766,9 +767,9 @@ class TestComposeWizardE2E(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         ICP = cls.env['ir.config_parameter'].sudo()
-        cls.has_creds = bool(ICP.get_param('kwtsms.api_username', ''))
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.enabled', 'True')
+        cls.has_creds = bool(ICP.get_str('kwtsms.api_username', ''))
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
 
     def _skip_if_no_creds(self):
         if not TEST_PHONE:
@@ -854,9 +855,9 @@ class TestTestSmsWizardE2E(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         ICP = cls.env['ir.config_parameter'].sudo()
-        cls.has_creds = bool(ICP.get_param('kwtsms.api_username', ''))
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.enabled', 'True')
+        cls.has_creds = bool(ICP.get_str('kwtsms.api_username', ''))
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
 
     def _skip_if_no_creds(self):
         if not TEST_PHONE:
@@ -899,7 +900,7 @@ class TestTestSmsWizardE2E(TransactionCase):
         """Test wizard always sends in test mode even if system setting is OFF."""
         self._skip_if_no_creds()
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.test_mode', 'False')
+        ICP.set_str('kwtsms.test_mode', 'False')
         try:
             wizard = self.env['kwtsms.test.sms.wizard'].create({
                 'phone': TEST_PHONE,
@@ -914,7 +915,7 @@ class TestTestSmsWizardE2E(TransactionCase):
             self.assertEqual(log.status, 'test',
                              'Test wizard should always log as test')
         finally:
-            ICP.set_param('kwtsms.test_mode', 'True')
+            ICP.set_str('kwtsms.test_mode', 'True')
 
 
 @tagged('post_install', '-at_install', 'kwtsms_e2e')
@@ -925,10 +926,10 @@ class TestOrderConfirmEdgeCases(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         ICP = cls.env['ir.config_parameter'].sudo()
-        cls.has_creds = bool(ICP.get_param('kwtsms.api_username', ''))
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.enabled', 'True')
-        ICP.set_param('kwtsms.auto_order_confirm', 'True')
+        cls.has_creds = bool(ICP.get_str('kwtsms.api_username', ''))
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.auto_order_confirm', 'True')
 
     def _skip_if_no_creds(self):
         if not TEST_PHONE:

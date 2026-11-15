@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """kwtSMS OTP Audit Log model."""
 
 import logging
@@ -51,7 +52,7 @@ class KwtSmsOtpLog(models.Model):
     def _cron_cleanup_old_otp_logs(self):
         """Daily cron: delete OTP logs older than retention days."""
         ICP = self.env['ir.config_parameter'].sudo()
-        retention_days = int(ICP.get_param('kwtsms.log_retention_days', '90'))
+        retention_days = int(ICP.get_str('kwtsms.log_retention_days', '90'))
         if retention_days <= 0:
             return
         cutoff = fields.Datetime.now() - timedelta(days=retention_days)

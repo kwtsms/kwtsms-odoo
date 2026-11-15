@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """kwtSMS API client integrated with Odoo's SMS framework."""
 
 import ast  # 2026-11-05 14:50 +03: read the manifest version for the User-Agent, #939
@@ -79,11 +80,11 @@ class KwtSmsApi(SmsApiBase):
     def __init__(self, env, account=None):
         super().__init__(env, account=account)
         ICP = self.env['ir.config_parameter'].sudo()
-        self._username = ICP.get_param('kwtsms.api_username', '')
-        self._password = ICP.get_param('kwtsms.api_password', '')
-        self._sender_id = ICP.get_param('kwtsms.sender_id', 'KWT-SMS')
-        self._test_mode = ICP.get_param('kwtsms.test_mode', 'True') == 'True'
-        self._default_country_code = ICP.get_param('kwtsms.default_country_code', '965')
+        self._username = ICP.get_str('kwtsms.api_username', '')
+        self._password = ICP.get_str('kwtsms.api_password', '')
+        self._sender_id = ICP.get_str('kwtsms.sender_id', 'KWT-SMS')
+        self._test_mode = ICP.get_str('kwtsms.test_mode', 'True') == 'True'
+        self._default_country_code = ICP.get_str('kwtsms.default_country_code', '965')
 
     # ═══════════════════════════════════════
     # Pre-flight checks (shared by send and _send_sms_batch)
@@ -96,7 +97,7 @@ class KwtSmsApi(SmsApiBase):
             dict or None: Error dict if a check fails, None if all OK.
         """
         ICP = self.env['ir.config_parameter'].sudo()
-        if ICP.get_param('kwtsms.enabled', 'True') != 'True':
+        if ICP.get_str('kwtsms.enabled', 'True') != 'True':
             return {
                 'code': 'ERR_DISABLED',
                 'description': 'SMS gateway is disabled. Enable it in kwtSMS Gateway settings.',

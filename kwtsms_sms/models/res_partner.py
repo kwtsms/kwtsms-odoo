@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """Normalized phone fields for OTP phone lookups."""
 
 from odoo import models, fields, api
@@ -19,7 +20,7 @@ class ResPartner(models.Model):
 
     @api.depends('phone')
     def _compute_kwtsms_phone_normalized(self):
-        default_cc = self.env['ir.config_parameter'].sudo().get_param(
+        default_cc = self.env['ir.config_parameter'].sudo().get_str(
             'kwtsms.default_country_code', '965',
         )
         for partner in self:

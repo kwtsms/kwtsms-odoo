@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """Tests for Phase 4 OTP models, services, and MFA hooks."""
 
 from datetime import timedelta
@@ -337,7 +338,7 @@ class TestOtpLog(TransactionCase):
     def test_cron_respects_custom_retention(self):
         """Cron uses custom retention_days from ICP."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.log_retention_days', '10')
+        ICP.set_str('kwtsms.log_retention_days', '10')
 
         log = self._create_log()
         self.env.cr.execute(
@@ -348,12 +349,12 @@ class TestOtpLog(TransactionCase):
         self.assertFalse(log.exists())
 
         # Restore
-        ICP.set_param('kwtsms.log_retention_days', '90')
+        ICP.set_str('kwtsms.log_retention_days', '90')
 
     def test_cron_zero_retention_skips(self):
         """Cron does nothing when retention_days is 0."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.log_retention_days', '0')
+        ICP.set_str('kwtsms.log_retention_days', '0')
 
         log = self._create_log()
         self.env.cr.execute(
@@ -364,7 +365,7 @@ class TestOtpLog(TransactionCase):
         self.assertTrue(log.exists())
 
         # Restore
-        ICP.set_param('kwtsms.log_retention_days', '90')
+        ICP.set_str('kwtsms.log_retention_days', '90')
 
 
 # =====================================================================
@@ -393,9 +394,9 @@ class TestResUsersMfa(TransactionCase):
     def setUp(self):
         super().setUp()
         # Default: gateway enabled, OTP toggles off
-        self.ICP.set_param('kwtsms.enabled', 'True')
-        self.ICP.set_param('kwtsms.otp_backend_login', 'False')
-        self.ICP.set_param('kwtsms.otp_portal_login', 'False')
+        self.ICP.set_str('kwtsms.enabled', 'True')
+        self.ICP.set_str('kwtsms.otp_backend_login', 'False')
+        self.ICP.set_str('kwtsms.otp_portal_login', 'False')
 
     def test_mfa_type_none_when_disabled(self):
         """No MFA type when both toggles are off."""
@@ -404,33 +405,33 @@ class TestResUsersMfa(TransactionCase):
 
     def test_mfa_type_backend_enabled(self):
         """Backend user gets sms_otp when backend toggle is on."""
-        self.ICP.set_param('kwtsms.otp_backend_login', 'True')
+        self.ICP.set_str('kwtsms.otp_backend_login', 'True')
         self.assertEqual(self.backend_user._mfa_type(), 'sms_otp')
 
     def test_mfa_type_portal_enabled(self):
         """Portal user gets sms_otp when portal toggle is on."""
-        self.ICP.set_param('kwtsms.otp_portal_login', 'True')
+        self.ICP.set_str('kwtsms.otp_portal_login', 'True')
         self.assertEqual(self.portal_user._mfa_type(), 'sms_otp')
 
     def test_mfa_type_backend_toggle_no_portal(self):
         """Backend toggle does not affect portal users."""
-        self.ICP.set_param('kwtsms.otp_backend_login', 'True')
+        self.ICP.set_str('kwtsms.otp_backend_login', 'True')
         self.assertFalse(self.portal_user._mfa_type())
 
     def test_mfa_type_portal_toggle_no_backend(self):
         """Portal toggle does not affect backend users."""
-        self.ICP.set_param('kwtsms.otp_portal_login', 'True')
+        self.ICP.set_str('kwtsms.otp_portal_login', 'True')
         self.assertFalse(self.backend_user._mfa_type())
 
     def test_mfa_type_gateway_disabled(self):
         """No MFA when gateway is disabled, even with toggle on."""
-        self.ICP.set_param('kwtsms.enabled', 'False')
-        self.ICP.set_param('kwtsms.otp_backend_login', 'True')
+        self.ICP.set_str('kwtsms.enabled', 'False')
+        self.ICP.set_str('kwtsms.otp_backend_login', 'True')
         self.assertFalse(self.backend_user._mfa_type())
 
     def test_mfa_url_returns_verify(self):
         """MFA URL points to OTP verify page when sms_otp is active."""
-        self.ICP.set_param('kwtsms.otp_backend_login', 'True')
+        self.ICP.set_str('kwtsms.otp_backend_login', 'True')
         self.assertEqual(
             self.backend_user._mfa_url(), '/kwtsms/otp/verify',
         )

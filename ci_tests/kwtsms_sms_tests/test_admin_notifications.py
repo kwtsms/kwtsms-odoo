@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """Tests for admin notification events: mixin, hooks, cron jobs, templates."""
 
 import json
@@ -18,18 +19,18 @@ class TestAdminNotificationMixin(TransactionCase):
         cls.company = cls.env.company
         cls.company.write({'name': 'Al-Salam Electronics'})
         ICP = cls.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.enabled', 'True')
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
-        ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
-        ICP.set_param('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.sender_id', 'KWT-SMS')
+        ICP.set_str('kwtsms.test_mode', 'True')
 
         # Set up gateway config with balance
         config = cls.env['kwtsms.gateway.config']._get_or_create()
         config.write({'balance_available': 1000, 'api_status': 'connected'})
 
         # Admin phone
-        ICP.set_param('kwtsms.admin_phone', '96598765432')
+        ICP.set_str('kwtsms.admin_phone', '96598765432')
 
     def _ensure_admin_template(self, event_type, body=None):
         """Create an admin template for the given event type."""
@@ -57,8 +58,8 @@ class TestAdminNotificationMixin(TransactionCase):
             'points-charged': 1, 'balance-after': 999,
         }
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.admin_phone_sales', '96598765432')
-        ICP.set_param('kwtsms.auto_admin_new_quotation', 'True')
+        ICP.set_str('kwtsms.admin_phone_sales', '96598765432')
+        ICP.set_str('kwtsms.auto_admin_new_quotation', 'True')
 
         self._ensure_admin_template('admin_new_quotation',
                                     '{company_name}: New quote {order_name}')
@@ -87,8 +88,8 @@ class TestAdminNotificationMixin(TransactionCase):
     def test_skips_when_gateway_disabled(self, mock_api_call):
         """Test admin notification skips when gateway is disabled."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.enabled', 'False')
-        ICP.set_param('kwtsms.auto_admin_new_quotation', 'True')
+        ICP.set_str('kwtsms.enabled', 'False')
+        ICP.set_str('kwtsms.auto_admin_new_quotation', 'True')
 
         self._ensure_admin_template('admin_new_quotation')
 
@@ -108,13 +109,13 @@ class TestAdminNotificationMixin(TransactionCase):
 
         mock_api_call.assert_not_called()
 
-        ICP.set_param('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
 
     @patch('odoo.addons.kwtsms_sms.tools.kwtsms_api.KwtSmsApi._api_call')
     def test_skips_when_event_toggle_disabled(self, mock_api_call):
         """Test admin notification skips when event toggle is off."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.auto_admin_new_quotation', 'False')
+        ICP.set_str('kwtsms.auto_admin_new_quotation', 'False')
 
         self._ensure_admin_template('admin_new_quotation')
 
@@ -138,9 +139,9 @@ class TestAdminNotificationMixin(TransactionCase):
     def test_skips_when_no_admin_phone(self, mock_api_call):
         """Test admin notification skips when no admin phone is configured."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.auto_admin_new_quotation', 'True')
-        ICP.set_param('kwtsms.admin_phone', '')
-        ICP.set_param('kwtsms.admin_phone_sales', '')
+        ICP.set_str('kwtsms.auto_admin_new_quotation', 'True')
+        ICP.set_str('kwtsms.admin_phone', '')
+        ICP.set_str('kwtsms.admin_phone_sales', '')
 
         self._ensure_admin_template('admin_new_quotation')
 
@@ -161,7 +162,7 @@ class TestAdminNotificationMixin(TransactionCase):
         mock_api_call.assert_not_called()
 
         # Restore
-        ICP.set_param('kwtsms.admin_phone', '96598765432')
+        ICP.set_str('kwtsms.admin_phone', '96598765432')
 
     @patch('odoo.addons.kwtsms_sms.tools.kwtsms_api.KwtSmsApi._api_call')
     def test_uses_company_language_for_template(self, mock_api_call):
@@ -171,7 +172,7 @@ class TestAdminNotificationMixin(TransactionCase):
             'points-charged': 1, 'balance-after': 999,
         }
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.auto_admin_new_quotation', 'True')
+        ICP.set_str('kwtsms.auto_admin_new_quotation', 'True')
 
         en_template = self._ensure_admin_template(
             'admin_new_quotation', '{company_name}: English admin')
@@ -212,18 +213,18 @@ class TestSalesAdminHooks(TransactionCase):
         cls.company = cls.env.company
         cls.company.write({'name': 'Al-Salam Electronics'})
         ICP = cls.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.enabled', 'True')
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
-        ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.admin_phone', '96598765432')
-        ICP.set_param('kwtsms.auto_admin_new_quotation', 'True')
-        ICP.set_param('kwtsms.auto_admin_large_order', 'True')
-        ICP.set_param('kwtsms.auto_admin_order_cancelled', 'True')
-        ICP.set_param('kwtsms.auto_order_confirm', 'True')
-        ICP.set_param('kwtsms.auto_order_cancel', 'True')
-        ICP.set_param('kwtsms.large_order_threshold', '1000')
+        ICP.set_str('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.sender_id', 'KWT-SMS')
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.admin_phone', '96598765432')
+        ICP.set_str('kwtsms.auto_admin_new_quotation', 'True')
+        ICP.set_str('kwtsms.auto_admin_large_order', 'True')
+        ICP.set_str('kwtsms.auto_admin_order_cancelled', 'True')
+        ICP.set_str('kwtsms.auto_order_confirm', 'True')
+        ICP.set_str('kwtsms.auto_order_cancel', 'True')
+        ICP.set_str('kwtsms.large_order_threshold', '1000')
 
         config = cls.env['kwtsms.gateway.config']._get_or_create()
         config.write({'balance_available': 1000, 'api_status': 'connected'})
@@ -372,7 +373,7 @@ class TestSalesAdminHooks(TransactionCase):
         }
 
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.large_order_threshold', '50')
+        ICP.set_str('kwtsms.large_order_threshold', '50')
 
         # Price * qty = 100.0, threshold is now 50
         order = self._create_sale_order(price=100.0, qty=1)
@@ -396,7 +397,7 @@ class TestSalesAdminHooks(TransactionCase):
         self.assertTrue(large_order_logged)
 
         # Restore
-        ICP.set_param('kwtsms.large_order_threshold', '1000')
+        ICP.set_str('kwtsms.large_order_threshold', '1000')
 
 
 @tagged('post_install', '-at_install')
@@ -409,14 +410,14 @@ class TestInventoryAdminHook(TransactionCase):
         cls.company = cls.env.company
         cls.company.write({'name': 'Al-Salam Electronics'})
         ICP = cls.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.enabled', 'True')
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
-        ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.admin_phone', '96598765432')
-        ICP.set_param('kwtsms.auto_admin_incoming_shipment', 'True')
-        ICP.set_param('kwtsms.auto_delivery_done', 'False')
+        ICP.set_str('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.sender_id', 'KWT-SMS')
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.admin_phone', '96598765432')
+        ICP.set_str('kwtsms.auto_admin_incoming_shipment', 'True')
+        ICP.set_str('kwtsms.auto_delivery_done', 'False')
 
         config = cls.env['kwtsms.gateway.config']._get_or_create()
         config.write({'balance_available': 1000, 'api_status': 'connected'})
@@ -537,14 +538,14 @@ class TestAccountingAdminHook(TransactionCase):
         cls.company = cls.env.company
         cls.company.write({'name': 'Al-Salam Electronics'})
         ICP = cls.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.enabled', 'True')
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
-        ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.admin_phone', '96598765432')
-        ICP.set_param('kwtsms.auto_admin_payment_received', 'True')
-        ICP.set_param('kwtsms.auto_payment_received', 'False')
+        ICP.set_str('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.sender_id', 'KWT-SMS')
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.admin_phone', '96598765432')
+        ICP.set_str('kwtsms.auto_admin_payment_received', 'True')
+        ICP.set_str('kwtsms.auto_payment_received', 'False')
 
         config = cls.env['kwtsms.gateway.config']._get_or_create()
         config.write({'balance_available': 1000, 'api_status': 'connected'})
@@ -652,14 +653,14 @@ class TestCrmAdminHooks(TransactionCase):
         cls.company = cls.env.company
         cls.company.write({'name': 'Al-Salam Electronics'})
         ICP = cls.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.enabled', 'True')
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
-        ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.admin_phone', '96598765432')
-        ICP.set_param('kwtsms.auto_admin_new_lead', 'True')
-        ICP.set_param('kwtsms.auto_admin_lead_stage_changed', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.sender_id', 'KWT-SMS')
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.admin_phone', '96598765432')
+        ICP.set_str('kwtsms.auto_admin_new_lead', 'True')
+        ICP.set_str('kwtsms.auto_admin_lead_stage_changed', 'True')
 
         config = cls.env['kwtsms.gateway.config']._get_or_create()
         config.write({'balance_available': 1000, 'api_status': 'connected'})
@@ -772,15 +773,15 @@ class TestAdminCronJobs(TransactionCase):
         cls.company = cls.env.company
         cls.company.write({'name': 'Al-Salam Electronics'})
         ICP = cls.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.enabled', 'True')
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
-        ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.admin_phone', '96598765432')
-        ICP.set_param('kwtsms.auto_admin_low_stock', 'True')
-        ICP.set_param('kwtsms.auto_admin_invoice_overdue', 'True')
-        ICP.set_param('kwtsms.overdue_invoice_days', '30')
+        ICP.set_str('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.sender_id', 'KWT-SMS')
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.admin_phone', '96598765432')
+        ICP.set_str('kwtsms.auto_admin_low_stock', 'True')
+        ICP.set_str('kwtsms.auto_admin_invoice_overdue', 'True')
+        ICP.set_str('kwtsms.overdue_invoice_days', '30')
 
         config = cls.env['kwtsms.gateway.config']._get_or_create()
         config.write({'balance_available': 1000, 'api_status': 'connected'})

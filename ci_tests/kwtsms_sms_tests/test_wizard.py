@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """Tests for the SMS Compose Wizard."""
 
 from unittest.mock import patch
@@ -15,11 +16,11 @@ class TestKwtSmsComposeWizard(TransactionCase):
         super().setUpClass()
         cls.env.company.write({'name': 'Gulf Trade Solutions'})
         ICP = cls.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
-        ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.sender_id', 'KWT-SMS')
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
 
         cls.partner = cls.env['res.partner'].create({
             'name': 'Maryam Al-Mutairi',
@@ -346,7 +347,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
     def test_action_send_production_mode_status(self, mock_api_call):
         """Test action_send sets status to 'success' when test mode is off."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.test_mode', 'False')
+        ICP.set_str('kwtsms.test_mode', 'False')
 
         mock_api_call.return_value = {
             'result': 'OK',
@@ -366,7 +367,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
         self.assertEqual(log.status, 'success')
 
         # Restore test mode
-        ICP.set_param('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.test_mode', 'True')
 
     @patch('odoo.addons.kwtsms_sms.tools.kwtsms_api.KwtSmsApi._api_call')
     def test_action_send_without_template(self, mock_api_call):

@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """Tests for SMS sending integration: API, batch sending, business event hooks."""
 
 import json
@@ -14,11 +15,11 @@ class TestKwtSmsApi(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
         ICP = cls.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
-        ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.sender_id', 'KWT-SMS')
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
 
     def _get_api(self):
         """Create and return a KwtSmsApi instance."""
@@ -471,13 +472,13 @@ class TestKwtSmsApi(TransactionCase):
     def test_api_test_mode_off(self):
         """Test API reads test mode = False when configured."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.test_mode', 'False')
+        ICP.set_str('kwtsms.test_mode', 'False')
 
         api = self._get_api()
         self.assertFalse(api._test_mode)
 
         # Restore
-        ICP.set_param('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.test_mode', 'True')
 
     def test_api_credentials_loaded(self):
         """Test API loads credentials from config parameters."""
@@ -727,12 +728,12 @@ class TestSaleOrderSmsIntegration(TransactionCase):
         super().setUpClass()
         cls.env.company.write({'name': 'Kuwait Digital Store'})
         ICP = cls.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.enabled', 'True')
-        ICP.set_param('kwtsms.auto_order_confirm', 'True')
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
-        ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
+        ICP.set_str('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.auto_order_confirm', 'True')
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.sender_id', 'KWT-SMS')
 
         cls.partner = cls.env['res.partner'].create({
             'name': 'Ahmad Al-Sabah',
@@ -794,7 +795,7 @@ class TestSaleOrderSmsIntegration(TransactionCase):
     def test_order_confirm_sms_disabled(self, mock_api_call):
         """Test that SMS is not sent when auto_order_confirm is disabled."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.auto_order_confirm', 'False')
+        ICP.set_str('kwtsms.auto_order_confirm', 'False')
 
         order = self._create_sale_order()
         order.action_confirm()
@@ -802,13 +803,13 @@ class TestSaleOrderSmsIntegration(TransactionCase):
         mock_api_call.assert_not_called()
 
         # Restore
-        ICP.set_param('kwtsms.auto_order_confirm', 'True')
+        ICP.set_str('kwtsms.auto_order_confirm', 'True')
 
     @patch('odoo.addons.kwtsms_sms.tools.kwtsms_api.KwtSmsApi._api_call')
     def test_order_confirm_gateway_disabled(self, mock_api_call):
         """Test that SMS is not sent when gateway is disabled."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.enabled', 'False')
+        ICP.set_str('kwtsms.enabled', 'False')
 
         order = self._create_sale_order()
         order.action_confirm()
@@ -816,7 +817,7 @@ class TestSaleOrderSmsIntegration(TransactionCase):
         mock_api_call.assert_not_called()
 
         # Restore
-        ICP.set_param('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.enabled', 'True')
 
     @patch('odoo.addons.kwtsms_sms.tools.kwtsms_api.KwtSmsApi._api_call')
     def test_order_confirm_no_phone(self, mock_api_call):
@@ -948,12 +949,12 @@ class TestStockPickingSmsIntegration(TransactionCase):
         super().setUpClass()
         cls.env.company.write({'name': 'Kuwait Digital Store'})
         ICP = cls.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.enabled', 'True')
-        ICP.set_param('kwtsms.auto_delivery_done', 'True')
-        ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
-        ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
+        ICP.set_str('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.auto_delivery_done', 'True')
+        ICP.set_str('kwtsms.test_mode', 'True')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.sender_id', 'KWT-SMS')
 
         cls.partner = cls.env['res.partner'].create({
             'name': 'Fatima Al-Rashidi',
@@ -1021,7 +1022,7 @@ class TestStockPickingSmsIntegration(TransactionCase):
     def test_delivery_done_sms_disabled(self, mock_api_call):
         """Test that SMS is not sent when auto_delivery_done is disabled."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.auto_delivery_done', 'False')
+        ICP.set_str('kwtsms.auto_delivery_done', 'False')
 
         picking = self._create_outgoing_picking()
         picking.action_confirm()
@@ -1032,7 +1033,7 @@ class TestStockPickingSmsIntegration(TransactionCase):
         mock_api_call.assert_not_called()
 
         # Restore
-        ICP.set_param('kwtsms.auto_delivery_done', 'True')
+        ICP.set_str('kwtsms.auto_delivery_done', 'True')
 
     @patch('odoo.addons.kwtsms_sms.tools.kwtsms_api.KwtSmsApi._api_call')
     def test_delivery_failure_does_not_block(self, mock_api_call):
@@ -1095,8 +1096,8 @@ class TestResCompanySmsRouting(TransactionCase):
     def test_returns_kwtsms_when_configured(self):
         """Test _get_sms_api_class returns KwtSmsApi when enabled."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.enabled', 'True')
-        ICP.set_param('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.api_username', 'testuser')
 
         from odoo.addons.kwtsms_sms.tools.kwtsms_api import KwtSmsApi
         result = self.company._get_sms_api_class()
@@ -1105,8 +1106,8 @@ class TestResCompanySmsRouting(TransactionCase):
     def test_returns_default_when_disabled(self):
         """Test _get_sms_api_class returns default when gateway is disabled."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.enabled', 'False')
-        ICP.set_param('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.enabled', 'False')
+        ICP.set_str('kwtsms.api_username', 'testuser')
 
         from odoo.addons.kwtsms_sms.tools.kwtsms_api import KwtSmsApi
         result = self.company._get_sms_api_class()
@@ -1115,8 +1116,8 @@ class TestResCompanySmsRouting(TransactionCase):
     def test_returns_default_when_no_username(self):
         """Test _get_sms_api_class returns default when no username set."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.enabled', 'True')
-        ICP.set_param('kwtsms.api_username', '')
+        ICP.set_str('kwtsms.enabled', 'True')
+        ICP.set_str('kwtsms.api_username', '')
 
         from odoo.addons.kwtsms_sms.tools.kwtsms_api import KwtSmsApi
         result = self.company._get_sms_api_class()

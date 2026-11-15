@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """Tests for kwtSMS models: gateway config, SMS log, SMS template, settings."""
 
 import json
@@ -117,8 +118,8 @@ class TestKwtSmsGatewayConfig(TransactionCase):
 
         # Set up API credentials
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
 
         config = self.env['kwtsms.gateway.config']._get_or_create()
         result = config.action_login_verify()
@@ -141,8 +142,8 @@ class TestKwtSmsGatewayConfig(TransactionCase):
         }
 
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.api_username', 'baduser')
-        ICP.set_param('kwtsms.api_password', 'badpass')
+        ICP.set_str('kwtsms.api_username', 'baduser')
+        ICP.set_str('kwtsms.api_password', 'badpass')
 
         config = self.env['kwtsms.gateway.config']._get_or_create()
         result = config.action_login_verify()
@@ -167,8 +168,8 @@ class TestKwtSmsGatewayConfig(TransactionCase):
         })
 
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
 
         self.env['kwtsms.gateway.config']._cron_refresh_all()
 
@@ -264,7 +265,7 @@ class TestKwtSmsLog(TransactionCase):
     def test_cron_cleanup_old_logs(self):
         """Test cron deletes logs older than retention period."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.log_retention_days', '30')
+        ICP.set_str('kwtsms.log_retention_days', '30')
 
         # Create an old log by writing directly to the database
         old_log = self._create_log()
@@ -287,7 +288,7 @@ class TestKwtSmsLog(TransactionCase):
     def test_cron_cleanup_zero_retention(self):
         """Test cron does nothing when retention is 0 (disabled)."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.log_retention_days', '0')
+        ICP.set_str('kwtsms.log_retention_days', '0')
 
         log = self._create_log()
 
@@ -299,7 +300,7 @@ class TestKwtSmsLog(TransactionCase):
     def test_cron_cleanup_negative_retention(self):
         """Test cron does nothing when retention is negative."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.log_retention_days', '-5')
+        ICP.set_str('kwtsms.log_retention_days', '-5')
 
         log = self._create_log()
 
@@ -613,7 +614,7 @@ class TestGatewayConfigSettings(TransactionCase):
         cls.company = cls.env.company
         cls.company.write({'name': 'Al-Salam Electronics'})
         ICP = cls.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
+        ICP.set_str('kwtsms.sender_id', 'KWT-SMS')
 
     def _get_config(self):
         """Get or create the gateway config singleton."""
@@ -629,7 +630,7 @@ class TestGatewayConfigSettings(TransactionCase):
         config = self._get_config()
         config.cfg_sender_id = 'MYSENDER'
         ICP = self.env['ir.config_parameter'].sudo()
-        self.assertEqual(ICP.get_param('kwtsms.sender_id'), 'MYSENDER')
+        self.assertEqual(ICP.get_str('kwtsms.sender_id'), 'MYSENDER')
 
     def test_get_sender_id_selection_default(self):
         """Test _get_sender_id_selection always includes KWT-SMS."""
@@ -641,7 +642,7 @@ class TestGatewayConfigSettings(TransactionCase):
     def test_get_sender_id_selection_includes_saved(self):
         """Test _get_sender_id_selection includes the currently saved value."""
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.sender_id', 'CUSTOM-ID')
+        ICP.set_str('kwtsms.sender_id', 'CUSTOM-ID')
 
         config = self._get_config()
         selection = config._get_sender_id_selection()
@@ -667,15 +668,15 @@ class TestGatewayConfigSettings(TransactionCase):
 
         # Test enabled toggle
         config.cfg_enabled = False
-        self.assertEqual(ICP.get_param('kwtsms.enabled'), 'False')
+        self.assertEqual(ICP.get_str('kwtsms.enabled'), 'False')
         config.cfg_enabled = True
-        self.assertEqual(ICP.get_param('kwtsms.enabled'), 'True')
+        self.assertEqual(ICP.get_str('kwtsms.enabled'), 'True')
 
         # Test test_mode toggle
         config.cfg_test_mode = False
-        self.assertEqual(ICP.get_param('kwtsms.test_mode'), 'False')
+        self.assertEqual(ICP.get_str('kwtsms.test_mode'), 'False')
         config.cfg_test_mode = True
-        self.assertEqual(ICP.get_param('kwtsms.test_mode'), 'True')
+        self.assertEqual(ICP.get_str('kwtsms.test_mode'), 'True')
 
     def test_cfg_toggle_fields(self):
         """Test notification toggle fields persist correctly."""
@@ -683,12 +684,12 @@ class TestGatewayConfigSettings(TransactionCase):
         ICP = self.env['ir.config_parameter'].sudo()
 
         config.cfg_auto_order_confirm = False
-        self.assertEqual(ICP.get_param('kwtsms.auto_order_confirm'), 'False')
+        self.assertEqual(ICP.get_str('kwtsms.auto_order_confirm'), 'False')
         config.cfg_auto_order_confirm = True
-        self.assertEqual(ICP.get_param('kwtsms.auto_order_confirm'), 'True')
+        self.assertEqual(ICP.get_str('kwtsms.auto_order_confirm'), 'True')
 
         config.cfg_auto_delivery_done = True
-        self.assertEqual(ICP.get_param('kwtsms.auto_delivery_done'), 'True')
+        self.assertEqual(ICP.get_str('kwtsms.auto_delivery_done'), 'True')
 
     @patch('odoo.addons.kwtsms_sms.tools.kwtsms_api.KwtSmsApi._api_call')
     def test_action_login(self, mock_api_call):
@@ -699,8 +700,8 @@ class TestGatewayConfigSettings(TransactionCase):
             'purchased': 200,
         }
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
 
         config = self._get_config()
         result = config.action_login()
@@ -715,8 +716,8 @@ class TestGatewayConfigSettings(TransactionCase):
             'purchased': 1500,
         }
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
 
         config = self._get_config()
         config.action_refresh_dashboard()
@@ -731,8 +732,8 @@ class TestGatewayConfigSettings(TransactionCase):
             'description': 'Auth failed',
         }
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.api_username', 'testuser')
-        ICP.set_param('kwtsms.api_password', 'testpass')
+        ICP.set_str('kwtsms.api_username', 'testuser')
+        ICP.set_str('kwtsms.api_password', 'testpass')
 
         config = self._get_config()
         config.action_refresh_dashboard()

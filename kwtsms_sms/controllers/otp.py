@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """OTP verification controller for SMS-based 2FA and signup."""
 
 import json
@@ -27,13 +28,13 @@ class KwtSmsOtpController(http.Controller):
         """Read OTP configuration from system parameters."""
         ICP = request.env['ir.config_parameter'].sudo()
         return {
-            'length': int(ICP.get_param('kwtsms.otp_length', '6')),
-            'expiry_minutes': int(ICP.get_param('kwtsms.otp_expiry_minutes', '5')),
-            'max_attempts': int(ICP.get_param('kwtsms.otp_max_attempts', '3')),
-            'lockout_minutes': int(ICP.get_param('kwtsms.otp_lockout_minutes', '15')),
-            'cooldown_seconds': int(ICP.get_param('kwtsms.otp_cooldown_seconds', '60')),
-            'ip_daily_limit': int(ICP.get_param('kwtsms.otp_ip_daily_limit', '10')),
-            'remember_days': int(ICP.get_param('kwtsms.otp_remember_days', '30')),
+            'length': int(ICP.get_str('kwtsms.otp_length', '6')),
+            'expiry_minutes': int(ICP.get_str('kwtsms.otp_expiry_minutes', '5')),
+            'max_attempts': int(ICP.get_str('kwtsms.otp_max_attempts', '3')),
+            'lockout_minutes': int(ICP.get_str('kwtsms.otp_lockout_minutes', '15')),
+            'cooldown_seconds': int(ICP.get_str('kwtsms.otp_cooldown_seconds', '60')),
+            'ip_daily_limit': int(ICP.get_str('kwtsms.otp_ip_daily_limit', '10')),
+            'remember_days': int(ICP.get_str('kwtsms.otp_remember_days', '30')),
         }
 
     def _get_ip(self):
@@ -76,7 +77,7 @@ class KwtSmsOtpController(http.Controller):
             if raw:
                 from odoo.addons.kwtsms_sms.tools.phone_utils import prepare_phone
                 ICP = request.env['ir.config_parameter'].sudo()
-                default_cc = ICP.get_param('kwtsms.default_country_code', '965')
+                default_cc = ICP.get_str('kwtsms.default_country_code', '965')
                 phone, _ = prepare_phone(raw, default_cc)
         return phone or ''
 
@@ -652,15 +653,15 @@ class KwtSmsOtpController(http.Controller):
     def otp_phone_login(self, **kwargs):
         """Handle passwordless phone login: lookup user by phone, send OTP."""
         ICP = request.env['ir.config_parameter'].sudo()
-        if ICP.get_param('kwtsms.otp_passwordless', 'False') != 'True':
+        if ICP.get_str('kwtsms.otp_passwordless', 'False') != 'True':
             return request.redirect('/web/login')
-        if ICP.get_param('kwtsms.enabled', 'False') != 'True':
+        if ICP.get_str('kwtsms.enabled', 'False') != 'True':
             return request.redirect('/web/login')
 
         phone_input = kwargs.get('phone', '').strip()
         country_code = kwargs.get('country_code', '').strip()
         if not country_code:
-            country_code = ICP.get_param('kwtsms.default_country_code', '965')
+            country_code = ICP.get_str('kwtsms.default_country_code', '965')
 
         config = self._get_otp_config()
 
@@ -823,15 +824,15 @@ class KwtSmsResetController(http.Controller):
     def otp_reset_password(self, **kwargs):
         """Handle phone-based password reset: lookup user, send OTP."""
         ICP = request.env['ir.config_parameter'].sudo()
-        if ICP.get_param('kwtsms.otp_password_reset', 'False') != 'True':
+        if ICP.get_str('kwtsms.otp_password_reset', 'False') != 'True':
             return request.redirect('/web/login')
-        if ICP.get_param('kwtsms.enabled', 'False') != 'True':
+        if ICP.get_str('kwtsms.enabled', 'False') != 'True':
             return request.redirect('/web/login')
 
         phone_input = kwargs.get('phone', '').strip()
         country_code = kwargs.get('country_code', '').strip()
         if not country_code:
-            country_code = ICP.get_param('kwtsms.default_country_code', '965')
+            country_code = ICP.get_str('kwtsms.default_country_code', '965')
 
         # Validate phone format
         from odoo.addons.kwtsms_sms.tools.phone_utils import prepare_phone
@@ -986,8 +987,8 @@ class KwtSmsSignupController(http.Controller):
 
         ICP = request.env['ir.config_parameter'].sudo()
         otp_enabled = (
-            ICP.get_param('kwtsms.otp_signup', 'False') == 'True'
-            and ICP.get_param('kwtsms.enabled', 'False') == 'True'
+            ICP.get_str('kwtsms.otp_signup', 'False') == 'True'
+            and ICP.get_str('kwtsms.enabled', 'False') == 'True'
         )
 
         if not otp_enabled or request.httprequest.method == 'GET':
@@ -1022,7 +1023,7 @@ class KwtSmsSignupController(http.Controller):
             return request.redirect('/web/signup?kwtsms_error=no_phone')
 
         from odoo.addons.kwtsms_sms.tools.phone_utils import prepare_phone
-        default_cc = ICP.get_param('kwtsms.default_country_code', '965')
+        default_cc = ICP.get_str('kwtsms.default_country_code', '965')
         normalized, error = prepare_phone(phone, default_cc)
         if error:
             return request.redirect('/web/signup?kwtsms_error=invalid_phone')

@@ -1,3 +1,4 @@
+# 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """SMS notifications on sale order events."""
 
 import logging
@@ -56,7 +57,7 @@ class SaleOrder(models.Model):
 
             try:
                 ICP = self.env['ir.config_parameter'].sudo()
-                threshold = float(ICP.get_param('kwtsms.large_order_threshold', '1000'))
+                threshold = float(ICP.get_str('kwtsms.large_order_threshold', '1000'))
                 if order.amount_total >= threshold:
                     currency = order.currency_id.symbol if order.currency_id else ''
                     order._kwtsms_send_admin_notification(
