@@ -85,7 +85,8 @@ class KwtSmsOtpController(http.Controller):
         """Determine OTP type based on user and flow."""
         if passwordless:
             return 'passwordless'
-        if user.has_group('base.group_user'):
+        # 2026-11-18 01:52 +03: Odoo 20 has_group() refuses other users; share = not internal, int-backport
+        if not user.share:
             return 'backend_login'
         return 'portal_login'
 
