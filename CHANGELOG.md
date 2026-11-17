@@ -8,6 +8,9 @@ with Odoo version prefix (e.g., 19.0.1.0.0).
 
 ## [Unreleased]
 
+### Fixed
+- Arabic: Sender ID now reads "اسم المرسل", the wording used in the kwtSMS account.
+
 ### Added
 - Odoo 17.0 branch (17.0.4.0.0), ported from 19.0. Fixes a fresh-install failure caused by the data file order.
 
