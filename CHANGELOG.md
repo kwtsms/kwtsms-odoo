@@ -8,6 +8,12 @@ with Odoo version prefix (e.g., 19.0.1.0.0).
 
 ## [Unreleased]
 
+### Fixed
+- Signing in to Odoo failed (error 403) once the module was installed on current Odoo releases; sign-in works again.
+- After Login or Logout on the Gateway page, Odoo showed "Missing Action"; the page now reloads normally.
+- The Send Test SMS box on the Gateway page failed to open on Odoo 20; it works now.
+- Arabic: Sender ID now reads "اسم المرسل", the wording used in the kwtSMS account.
+
 ### Added
 - Odoo 20.0 branch (20.0.4.0.0), ported from 19.0. Fixes a fresh-install failure caused by the data file order.
 

@@ -1,16 +1,17 @@
 /** @odoo-module */
 
-import { Component, useState } from "@odoo/owl";
+// 2026-11-18 01:58 +03: Owl 3 (Odoo 20) has no useState; proxy() is the reactive state, int-backport
+import { Component, proxy } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
 export class KwtSmsTestWidget extends Component {
     static template = "kwtsms_sms.TestSmsWidget";
-    static props = { "*": true };
+    // 2026-11-18 01:56 +03: Odoo 20 runs Owl 3, which throws on a static "props"; the widget reads no props, so none are declared, int-backport
 
     setup() {
         this.orm = useService("orm");
-        this.state = useState({
+        this.state = proxy({
             phone: "",
             message: `kwtSMS gateway test from Odoo at ${new Date().toLocaleString()}`,
             sending: false,

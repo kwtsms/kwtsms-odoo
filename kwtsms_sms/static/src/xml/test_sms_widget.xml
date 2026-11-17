@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 2026-11-18 02:00 +03: Owl 3 (Odoo 20) templates read component members through "this.", int-backport -->
 <templates xml:space="preserve">
     <t t-name="kwtsms_sms.TestSmsWidget">
         <div>
             <div>
                 <!-- 2026-11-05 11:30 +03: placeholder 965XXXXXXXX instead of a sample mobile number (sample numbers belong to real people), int-testnumber -->
                 <input type="text" class="o_input"
-                       t-att-value="state.phone"
-                       t-on-input="onPhoneInput"
+                       t-att-value="this.state.phone"
+                       t-on-input="this.onPhoneInput"
                        placeholder="e.g. 965XXXXXXXX"
                        style="max-width: 400px;"/>
             </div>
             <div class="mt-2">
                 <textarea class="o_input"
-                          t-on-input="onMessageInput"
+                          t-on-input="this.onMessageInput"
                           placeholder="Test message"
                           style="max-width: 100%; min-height: 60px;"
-                          t-esc="state.message"/>
+                          t-esc="this.state.message"/>
             </div>
             <div class="mt-2">
                 <button class="btn btn-primary"
-                        t-on-click="onClickSend"
-                        t-att-disabled="state.sending">
-                    <t t-if="state.sending">
+                        t-on-click="this.onClickSend"
+                        t-att-disabled="this.state.sending">
+                    <t t-if="this.state.sending">
                         <i class="fa fa-spinner fa-spin"/> Sending...
                     </t>
                     <t t-else="">
@@ -29,13 +30,13 @@
                     </t>
                 </button>
             </div>
-            <div t-if="state.resultMessage"
-                 t-attf-class="alert alert-#{state.resultType} mt-2 mb-0 py-2 px-3"
+            <div t-if="this.state.resultMessage"
+                 t-attf-class="alert alert-#{this.state.resultType} mt-2 mb-0 py-2 px-3"
                  style="max-width: 500px;"
                  role="alert">
-                <i t-if="state.resultType === 'success'" class="fa fa-check-circle me-1"/>
-                <i t-if="state.resultType === 'danger'" class="fa fa-exclamation-circle me-1"/>
-                <t t-esc="state.resultMessage"/>
+                <i t-if="this.state.resultType === 'success'" class="fa fa-check-circle me-1"/>
+                <i t-if="this.state.resultType === 'danger'" class="fa fa-exclamation-circle me-1"/>
+                <t t-esc="this.state.resultMessage"/>
             </div>
         </div>
     </t>
