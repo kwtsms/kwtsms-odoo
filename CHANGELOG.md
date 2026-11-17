@@ -8,6 +8,13 @@ with Odoo version prefix (e.g., 19.0.1.0.0).
 
 ## [Unreleased]
 
+## [0.4.2] - 2026-11-18
+
+### Fixed
+- Signing in to Odoo failed (error 403) once the module was installed on current Odoo releases; sign-in works again.
+- After Login or Logout on the Gateway page, Odoo showed "Missing Action"; the page now reloads normally.
+- Arabic: Sender ID now reads "اسم المرسل", the wording used in the kwtSMS account.
+
 ## [0.4.1] - 2026-11-16
 
 ### Fixed

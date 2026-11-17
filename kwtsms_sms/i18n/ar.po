@@ -1518,7 +1518,7 @@ msgstr "إرسال رسالة اختبارية"
 #: model:ir.model.fields,field_description:kwtsms_sms.field_kwtsms_gateway_config__current_sender
 #: model:ir.model.fields,field_description:kwtsms_sms.field_kwtsms_sms_log__sender_id
 msgid "Sender ID"
-msgstr "معرف المرسل"
+msgstr "اسم المرسل"
 
 #. module: kwtsms_sms
 #: model:ir.model.fields,field_description:kwtsms_sms.field_kwtsms_gateway_config__sender_ids_json
@@ -2086,13 +2086,13 @@ msgstr ""
 #~ msgstr "المبيعات: رسالة قصيرة عند تأكيد الطلب"
 
 #~ msgid "Select your Sender ID"
-#~ msgstr "اختر معرف المرسل"
+#~ msgstr "اختر اسم المرسل"
 
 #~ msgid "Select your registered sender ID."
-#~ msgstr "اختر معرف المرسل المسجل."
+#~ msgstr "اختر اسم المرسل المسجل."
 
 #~ msgid "Sender ID Help"
-#~ msgstr "مساعدة معرف المرسل"
+#~ msgstr "مساعدة اسم المرسل"
 
 #~ msgid "Switch Test Mode OFF when ready for production"
 #~ msgstr "أوقف وضع الاختبار عندما تكون جاهزاً للإنتاج"

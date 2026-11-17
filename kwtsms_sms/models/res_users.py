@@ -18,7 +18,8 @@ class ResUsers(models.Model):
         if ICP.get_param('kwtsms.enabled', 'False') != 'True':
             return r
 
-        if self.has_group('base.group_user'):
+        # 2026-11-18 02:03 +03: current Odoo 19 has_group() refuses any user but the current one, and login runs as another user (403 on every login); share = not internal, int-backport
+        if not self.share:
             # Internal/backend user
             if ICP.get_param('kwtsms.otp_backend_login', 'False') == 'True':
                 return 'sms_otp'
