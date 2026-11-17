@@ -246,5 +246,7 @@
         <field name="model_id" ref="model_kwtsms_gateway_config"/>
         <field name="state">code</field>
         <field name="code">action = model._action_open_dashboard()</field>
+        <!-- 2026-11-18 01:42 +03: URL path of the action; Login/Logout reload /odoo/kwtsms and Odoo answered "Missing Action", int-backport -->
+        <field name="path">kwtsms</field>
     </record>
 </odoo>
