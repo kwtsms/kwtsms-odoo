@@ -8,6 +8,10 @@ with Odoo version prefix (e.g., 19.0.1.0.0).
 
 ## [Unreleased]
 
+### Fixed
+- After Login or Logout on the Gateway page, Odoo showed "Missing Action"; the page now reloads normally.
+- Arabic: Sender ID now reads "اسم المرسل", the wording used in the kwtSMS account.
+
 ### Added
 - Odoo 18.0 branch (18.0.4.0.0), ported from 19.0. Fixes a fresh-install failure caused by the data file order.
 
