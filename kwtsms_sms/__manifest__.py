@@ -1,6 +1,6 @@
 {
     'name': 'kwtSMS Gateway',
-    'version': '19.0.4.0.1',  # 2026-11-16 01:35 +03: hotfix, fresh install failed (load order), int-backport
+    'version': '19.0.4.0.2',  # 2026-11-18 02:05 +03: hotfix, login 403 + Missing Action + Arabic Sender ID term (was 19.0.4.0.1 load order fix), int-backport
     'summary': 'Send SMS via kwtSMS gateway with business event notifications',
     'description': """
 kwtSMS Gateway for Odoo
