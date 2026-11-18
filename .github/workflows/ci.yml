@@ -7,6 +7,10 @@ on:
   pull_request:
     branches: ['17.0', '18.0', '19.0', '20.0']
 
+# 2026-11-18 10:56 +03: least-privilege token (code-scanning alerts 8, 9: missing-workflow-permissions), repo sweep
+permissions:
+  contents: read
+
 jobs:
   lint:
     name: Lint
