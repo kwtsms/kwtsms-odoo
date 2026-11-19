@@ -1,3 +1,4 @@
+# 2026-11-19 03:48 +03: old sample Kuwait number (a real person's) -> 96550000000 / 50000000 in all forms, #1519
 # 2026-11-16 01:28 +03: res.users field is groups_id before Odoo 19 (group_ids). Task int-backport
 """Tests for kwtSMS security: access rights, record rules, groups."""
 
@@ -91,7 +92,7 @@ class TestKwtSmsAccessRights(TransactionCase):
     def test_log_user_can_read(self):
         """Test basic users can read SMS logs."""
         log = self.env['kwtsms.sms.log'].sudo().create({
-            'phone_number': '96598765432',
+            'phone_number': '96550000000',
             'message_body': 'Test message',
             'status': 'success',
             'company_id': self.env.company.id,
@@ -102,7 +103,7 @@ class TestKwtSmsAccessRights(TransactionCase):
     def test_log_user_cannot_write(self):
         """Test basic users cannot write to SMS logs."""
         log = self.env['kwtsms.sms.log'].sudo().create({
-            'phone_number': '96598765432',
+            'phone_number': '96550000000',
             'message_body': 'Test message',
             'status': 'success',
             'company_id': self.env.company.id,
@@ -114,7 +115,7 @@ class TestKwtSmsAccessRights(TransactionCase):
         """Test basic users cannot create SMS logs."""
         with self.assertRaises(AccessError):
             self.env['kwtsms.sms.log'].with_user(self.basic_user).create({
-                'phone_number': '96598765432',
+                'phone_number': '96550000000',
                 'message_body': 'Test',
                 'status': 'success',
             })
@@ -122,7 +123,7 @@ class TestKwtSmsAccessRights(TransactionCase):
     def test_log_user_cannot_unlink(self):
         """Test basic users cannot delete SMS logs."""
         log = self.env['kwtsms.sms.log'].sudo().create({
-            'phone_number': '96598765432',
+            'phone_number': '96550000000',
             'message_body': 'Test message',
             'status': 'success',
             'company_id': self.env.company.id,
@@ -133,7 +134,7 @@ class TestKwtSmsAccessRights(TransactionCase):
     def test_log_system_full_access(self):
         """Test system users have full CRUD on SMS logs."""
         log = self.env['kwtsms.sms.log'].with_user(self.system_user).create({
-            'phone_number': '96598765432',
+            'phone_number': '96550000000',
             'message_body': 'Test message',
             'status': 'success',
             'company_id': self.env.company.id,
@@ -251,7 +252,7 @@ class TestKwtSmsAccessRights(TransactionCase):
         """Test basic users without manager group cannot create compose wizard."""
         with self.assertRaises(AccessError):
             self.env['kwtsms.sms.compose'].with_user(self.basic_user).create({
-                'phone': '96598765432',
+                'phone': '96550000000',
                 'message': 'Test',
             })
 
@@ -260,7 +261,7 @@ class TestKwtSmsAccessRights(TransactionCase):
         wizard = self.env['kwtsms.sms.compose'].with_user(
             self.manager_user,
         ).create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'Hello from manager',
         })
         self.assertTrue(wizard.id)
@@ -270,7 +271,7 @@ class TestKwtSmsAccessRights(TransactionCase):
         wizard = self.env['kwtsms.sms.compose'].with_user(
             self.system_user,
         ).create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'Hello from system',
         })
         self.assertTrue(wizard.id)
@@ -312,13 +313,13 @@ class TestKwtSmsRecordRules(TransactionCase):
     def test_log_company_isolation(self):
         """Test users can only see logs from their own company."""
         log_a = self.env['kwtsms.sms.log'].sudo().create({
-            'phone_number': '96598765432',
+            'phone_number': '96550000000',
             'message_body': 'Company A message',
             'status': 'success',
             'company_id': self.company_a.id,
         })
         log_b = self.env['kwtsms.sms.log'].sudo().create({
-            'phone_number': '96598765432',
+            'phone_number': '96550000000',
             'message_body': 'Company B message',
             'status': 'success',
             'company_id': self.company_b.id,
@@ -337,7 +338,7 @@ class TestKwtSmsRecordRules(TransactionCase):
     def test_log_no_company_visible_to_all(self):
         """Test log records with no company are visible to all users."""
         log_global = self.env['kwtsms.sms.log'].sudo().create({
-            'phone_number': '96598765432',
+            'phone_number': '96550000000',
             'message_body': 'Global message',
             'status': 'success',
             'company_id': False,
