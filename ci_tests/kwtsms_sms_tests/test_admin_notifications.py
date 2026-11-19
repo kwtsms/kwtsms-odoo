@@ -1,3 +1,4 @@
+# 2026-11-19 03:48 +03: old sample Kuwait number (a real person's) -> 96550000000 / 50000000 in all forms, #1519
 """Tests for admin notification events: mixin, hooks, cron jobs, templates."""
 
 import json
@@ -29,7 +30,7 @@ class TestAdminNotificationMixin(TransactionCase):
         config.write({'balance_available': 1000, 'api_status': 'connected'})
 
         # Admin phone
-        ICP.set_param('kwtsms.admin_phone', '96598765432')
+        ICP.set_param('kwtsms.admin_phone', '96550000000')
 
     def _ensure_admin_template(self, event_type, body=None):
         """Create an admin template for the given event type."""
@@ -57,7 +58,7 @@ class TestAdminNotificationMixin(TransactionCase):
             'points-charged': 1, 'balance-after': 999,
         }
         ICP = self.env['ir.config_parameter'].sudo()
-        ICP.set_param('kwtsms.admin_phone_sales', '96598765432')
+        ICP.set_param('kwtsms.admin_phone_sales', '96550000000')
         ICP.set_param('kwtsms.auto_admin_new_quotation', 'True')
 
         self._ensure_admin_template('admin_new_quotation',
@@ -65,7 +66,7 @@ class TestAdminNotificationMixin(TransactionCase):
 
         partner = self.env['res.partner'].create({
             'name': 'Test Customer',
-            'phone': '+96598765432',
+            'phone': '+96550000000',
         })
         product = self.env['product.product'].create({
             'name': 'Test Product', 'type': 'consu', 'list_price': 50.0,
@@ -81,7 +82,7 @@ class TestAdminNotificationMixin(TransactionCase):
 
         self.assertTrue(mock_api_call.called)
         payload = mock_api_call.call_args[0][1]
-        self.assertIn('96598765432', payload.get('mobile', ''))
+        self.assertIn('96550000000', payload.get('mobile', ''))
 
     @patch('odoo.addons.kwtsms_sms.tools.kwtsms_api.KwtSmsApi._api_call')
     def test_skips_when_gateway_disabled(self, mock_api_call):
@@ -93,7 +94,7 @@ class TestAdminNotificationMixin(TransactionCase):
         self._ensure_admin_template('admin_new_quotation')
 
         partner = self.env['res.partner'].create({
-            'name': 'Test Customer', 'phone': '+96598765432',
+            'name': 'Test Customer', 'phone': '+96550000000',
         })
         product = self.env['product.product'].create({
             'name': 'Test Product', 'type': 'consu', 'list_price': 50.0,
@@ -119,7 +120,7 @@ class TestAdminNotificationMixin(TransactionCase):
         self._ensure_admin_template('admin_new_quotation')
 
         partner = self.env['res.partner'].create({
-            'name': 'Test Customer', 'phone': '+96598765432',
+            'name': 'Test Customer', 'phone': '+96550000000',
         })
         product = self.env['product.product'].create({
             'name': 'Test Product', 'type': 'consu', 'list_price': 50.0,
@@ -145,7 +146,7 @@ class TestAdminNotificationMixin(TransactionCase):
         self._ensure_admin_template('admin_new_quotation')
 
         partner = self.env['res.partner'].create({
-            'name': 'Test Customer', 'phone': '+96598765432',
+            'name': 'Test Customer', 'phone': '+96550000000',
         })
         product = self.env['product.product'].create({
             'name': 'Test Product', 'type': 'consu', 'list_price': 50.0,
@@ -161,7 +162,7 @@ class TestAdminNotificationMixin(TransactionCase):
         mock_api_call.assert_not_called()
 
         # Restore
-        ICP.set_param('kwtsms.admin_phone', '96598765432')
+        ICP.set_param('kwtsms.admin_phone', '96550000000')
 
     @patch('odoo.addons.kwtsms_sms.tools.kwtsms_api.KwtSmsApi._api_call')
     def test_uses_company_language_for_template(self, mock_api_call):
@@ -178,7 +179,7 @@ class TestAdminNotificationMixin(TransactionCase):
 
         # Company language is not Arabic, so should use English template
         partner = self.env['res.partner'].create({
-            'name': 'Test Customer', 'phone': '+96598765432',
+            'name': 'Test Customer', 'phone': '+96550000000',
         })
         product = self.env['product.product'].create({
             'name': 'Test Product', 'type': 'consu', 'list_price': 50.0,
@@ -217,7 +218,7 @@ class TestSalesAdminHooks(TransactionCase):
         ICP.set_param('kwtsms.api_password', 'testpass')
         ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
         ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.admin_phone', '96598765432')
+        ICP.set_param('kwtsms.admin_phone', '96550000000')
         ICP.set_param('kwtsms.auto_admin_new_quotation', 'True')
         ICP.set_param('kwtsms.auto_admin_large_order', 'True')
         ICP.set_param('kwtsms.auto_admin_order_cancelled', 'True')
@@ -229,7 +230,7 @@ class TestSalesAdminHooks(TransactionCase):
         config.write({'balance_available': 1000, 'api_status': 'connected'})
 
         cls.partner = cls.env['res.partner'].create({
-            'name': 'Ahmad Al-Sabah', 'phone': '+96598765432',
+            'name': 'Ahmad Al-Sabah', 'phone': '+96550000000',
         })
         cls.product = cls.env['product.product'].create({
             'name': 'Samsung Galaxy S24', 'type': 'consu', 'list_price': 100.0,
@@ -414,7 +415,7 @@ class TestInventoryAdminHook(TransactionCase):
         ICP.set_param('kwtsms.api_password', 'testpass')
         ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
         ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.admin_phone', '96598765432')
+        ICP.set_param('kwtsms.admin_phone', '96550000000')
         ICP.set_param('kwtsms.auto_admin_incoming_shipment', 'True')
         ICP.set_param('kwtsms.auto_delivery_done', 'False')
 
@@ -422,7 +423,7 @@ class TestInventoryAdminHook(TransactionCase):
         config.write({'balance_available': 1000, 'api_status': 'connected'})
 
         cls.partner = cls.env['res.partner'].create({
-            'name': 'Supplier Kuwait', 'phone': '+96598765432',
+            'name': 'Supplier Kuwait', 'phone': '+96550000000',
         })
         cls.product = cls.env['product.product'].create({
             'name': 'Apple iPad Pro', 'type': 'consu', 'list_price': 50.0,
@@ -542,7 +543,7 @@ class TestAccountingAdminHook(TransactionCase):
         ICP.set_param('kwtsms.api_password', 'testpass')
         ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
         ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.admin_phone', '96598765432')
+        ICP.set_param('kwtsms.admin_phone', '96550000000')
         ICP.set_param('kwtsms.auto_admin_payment_received', 'True')
         ICP.set_param('kwtsms.auto_payment_received', 'False')
 
@@ -558,7 +559,7 @@ class TestAccountingAdminHook(TransactionCase):
         ], limit=1)
 
         cls.partner = cls.env['res.partner'].create({
-            'name': 'Nora Al-Kandari', 'phone': '+96598765432',
+            'name': 'Nora Al-Kandari', 'phone': '+96550000000',
             'property_account_receivable_id': receivable.id,
             'property_account_payable_id': payable.id,
         })
@@ -657,7 +658,7 @@ class TestCrmAdminHooks(TransactionCase):
         ICP.set_param('kwtsms.api_password', 'testpass')
         ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
         ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.admin_phone', '96598765432')
+        ICP.set_param('kwtsms.admin_phone', '96550000000')
         ICP.set_param('kwtsms.auto_admin_new_lead', 'True')
         ICP.set_param('kwtsms.auto_admin_lead_stage_changed', 'True')
 
@@ -777,7 +778,7 @@ class TestAdminCronJobs(TransactionCase):
         ICP.set_param('kwtsms.api_password', 'testpass')
         ICP.set_param('kwtsms.sender_id', 'KWT-SMS')
         ICP.set_param('kwtsms.test_mode', 'True')
-        ICP.set_param('kwtsms.admin_phone', '96598765432')
+        ICP.set_param('kwtsms.admin_phone', '96550000000')
         ICP.set_param('kwtsms.auto_admin_low_stock', 'True')
         ICP.set_param('kwtsms.auto_admin_invoice_overdue', 'True')
         ICP.set_param('kwtsms.overdue_invoice_days', '30')

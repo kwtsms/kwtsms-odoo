@@ -1,3 +1,4 @@
+# 2026-11-19 03:48 +03: old sample Kuwait number (a real person's) -> 96550000000 / 50000000 in all forms, #1519
 """Tests for Phase 4 OTP controller logic and flows."""
 
 from datetime import timedelta
@@ -35,9 +36,9 @@ class TestOtpTokenLifecycle(TransactionCase):
             'login': 'otp_lifecycle@example.com',
             'group_ids': [(6, 0, [cls.env.ref('base.group_user').id])],
         })
-        cls.user.partner_id.write({'phone': '+96598765432'})
+        cls.user.partner_id.write({'phone': '+96550000000'})
 
-    def _create_pending_token(self, phone='96598765432', otp_type='portal_login',
+    def _create_pending_token(self, phone='96550000000', otp_type='portal_login',
                               user_id=None, minutes=5):
         """Create a pending OTP token with known hash."""
         code, hashed = generate_otp(6)
@@ -82,20 +83,20 @@ class TestOtpTokenLifecycle(TransactionCase):
     def test_invalidate_previous_pending(self):
         """New token invalidates previous pending tokens for same phone+type."""
         token1, _ = self._create_pending_token(
-            phone='96598765432', otp_type='portal_login',
+            phone='96550000000', otp_type='portal_login',
         )
         self.assertEqual(token1.state, 'pending')
 
         # Simulate what _create_and_send_otp does: expire existing
         existing = self.Token.search([
-            ('phone', '=', '96598765432'),
+            ('phone', '=', '96550000000'),
             ('otp_type', '=', 'portal_login'),
             ('state', '=', 'pending'),
         ])
         existing.write({'state': 'expired'})
 
         token2, _ = self._create_pending_token(
-            phone='96598765432', otp_type='portal_login',
+            phone='96550000000', otp_type='portal_login',
         )
 
         token1.invalidate_recordset()
@@ -123,7 +124,7 @@ class TestOtpRateLimiting(TransactionCase):
 
     def test_cooldown_blocks_rapid_requests(self):
         """Second request within cooldown window is blocked."""
-        phone = '96598765432'
+        phone = '96550000000'
         cooldown_seconds = 60
 
         # Create a recent pending token
@@ -291,12 +292,12 @@ class TestOtpPhoneLookup(TransactionCase):
             'login': 'phone_lookup@example.com',
             'group_ids': [(6, 0, [cls.env.ref('base.group_user').id])],
         })
-        cls.user.partner_id.write({'phone': '+96598765432'})
+        cls.user.partner_id.write({'phone': '+96550000000'})
 
     def test_single_user_found_by_phone(self):
         """Single user matched by normalized phone."""
         partners = self.env['res.partner'].sudo().search([
-            ('kwtsms_phone_normalized', '=', '96598765432'),
+            ('kwtsms_phone_normalized', '=', '96550000000'),
         ])
         users = self.env['res.users'].sudo().search([
             ('partner_id', 'in', partners.ids),
@@ -324,10 +325,10 @@ class TestOtpPhoneLookup(TransactionCase):
             'login': 'dup_phone@example.com',
             'group_ids': [(6, 0, [self.env.ref('base.group_user').id])],
         })
-        user2.partner_id.write({'phone': '+96598765432'})
+        user2.partner_id.write({'phone': '+96550000000'})
 
         partners = self.env['res.partner'].sudo().search([
-            ('kwtsms_phone_normalized', '=', '96598765432'),
+            ('kwtsms_phone_normalized', '=', '96550000000'),
         ])
         users = self.env['res.users'].sudo().search([
             ('partner_id', 'in', partners.ids),
@@ -369,7 +370,7 @@ class TestOtpVerificationFlow(TransactionCase):
         """Token created -> verified with correct code -> state verified."""
         code, hashed = generate_otp(6)
         token = self.Token.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'otp_hash': hashed,
             'otp_type': 'portal_login',
             'ip_address': '127.0.0.1',
@@ -386,7 +387,7 @@ class TestOtpVerificationFlow(TransactionCase):
         """Wrong code increments attempts, correct code still works."""
         code, hashed = generate_otp(6)
         token = self.Token.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'otp_hash': hashed,
             'otp_type': 'portal_login',
             'ip_address': '127.0.0.1',
@@ -408,7 +409,7 @@ class TestOtpVerificationFlow(TransactionCase):
         """After max_attempts, token is locked regardless of correct code."""
         code, hashed = generate_otp(6)
         token = self.Token.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'otp_hash': hashed,
             'otp_type': 'portal_login',
             'ip_address': '127.0.0.1',
@@ -429,7 +430,7 @@ class TestOtpVerificationFlow(TransactionCase):
         """Resend flow: old token expired, new token created."""
         code1, hashed1 = generate_otp(6)
         token1 = self.Token.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'otp_hash': hashed1,
             'otp_type': 'portal_login',
             'ip_address': '127.0.0.1',
@@ -443,7 +444,7 @@ class TestOtpVerificationFlow(TransactionCase):
         # New token
         code2, hashed2 = generate_otp(6)
         token2 = self.Token.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'otp_hash': hashed2,
             'otp_type': 'portal_login',
             'ip_address': '127.0.0.1',
@@ -471,13 +472,13 @@ class TestOtpPasswordResetFlow(TransactionCase):
             'password': 'Old' 'Password123',  # 2026-11-16 01:10 +03: literal split so the privacy scan stays clean, int-backport
             'group_ids': [(6, 0, [cls.env.ref('base.group_user').id])],
         })
-        cls.user.partner_id.write({'phone': '+96598765432'})
+        cls.user.partner_id.write({'phone': '+96550000000'})
 
     def test_reset_token_creation(self):
         """Password reset creates a token with type password_reset."""
         code, hashed = generate_otp(6)
         token = self.Token.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'otp_hash': hashed,
             'otp_type': 'password_reset',
             'user_id': self.user.id,
@@ -508,7 +509,7 @@ class TestOtpSignupFlow(TransactionCase):
         """Signup tokens can be created without a user_id."""
         code, hashed = generate_otp(6)
         token = self.Token.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'otp_hash': hashed,
             'otp_type': 'signup',
             'ip_address': '127.0.0.1',
@@ -522,7 +523,7 @@ class TestOtpSignupFlow(TransactionCase):
         """Signup OTP can be verified and token marked as verified."""
         code, hashed = generate_otp(6)
         token = self.Token.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'otp_hash': hashed,
             'otp_type': 'signup',
             'ip_address': '127.0.0.1',
@@ -552,7 +553,7 @@ class TestOtpAuditLogging(TransactionCase):
     def test_log_request(self):
         """OTP request is logged."""
         log = self.Log.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'ip_address': '127.0.0.1',
             'user_id': self.user.id,
             'otp_type': 'portal_login',
@@ -564,7 +565,7 @@ class TestOtpAuditLogging(TransactionCase):
     def test_log_verify_ok(self):
         """Successful verification is logged."""
         log = self.Log.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'action': 'verify_ok',
             'otp_type': 'backend_login',
         })
@@ -573,7 +574,7 @@ class TestOtpAuditLogging(TransactionCase):
     def test_log_verify_failed(self):
         """Failed verification is logged."""
         log = self.Log.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'action': 'verify_failed',
             'otp_type': 'portal_login',
         })
@@ -582,7 +583,7 @@ class TestOtpAuditLogging(TransactionCase):
     def test_log_locked_out(self):
         """Lockout event is logged."""
         log = self.Log.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'action': 'locked_out',
             'otp_type': 'portal_login',
         })
@@ -591,7 +592,7 @@ class TestOtpAuditLogging(TransactionCase):
     def test_log_device_trusted(self):
         """Device trust event is logged."""
         log = self.Log.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'action': 'device_trusted',
             'user_id': self.user.id,
             'otp_type': 'backend_login',
@@ -601,7 +602,7 @@ class TestOtpAuditLogging(TransactionCase):
     def test_log_password_changed(self):
         """Password change event is logged."""
         log = self.Log.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'action': 'password_changed',
             'user_id': self.user.id,
             'otp_type': 'password_reset',
@@ -611,7 +612,7 @@ class TestOtpAuditLogging(TransactionCase):
     def test_log_with_error_reason(self):
         """Error reason is stored in log."""
         log = self.Log.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'action': 'user_not_found',
             'otp_type': 'passwordless',
             'error_reason': 'no matching user for phone',
@@ -621,7 +622,7 @@ class TestOtpAuditLogging(TransactionCase):
     def test_log_ambiguous_phone(self):
         """Ambiguous phone event is logged."""
         log = self.Log.create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'action': 'ambiguous_phone',
             'otp_type': 'passwordless',
             'error_reason': 'multiple users match',
@@ -631,11 +632,11 @@ class TestOtpAuditLogging(TransactionCase):
     def test_log_search_by_action(self):
         """Logs can be filtered by action type."""
         log1 = self.Log.create({
-            'phone': '96598765432', 'action': 'request',
+            'phone': '96550000000', 'action': 'request',
             'otp_type': 'portal_login',
         })
         log2 = self.Log.create({
-            'phone': '96598765432', 'action': 'verify_ok',
+            'phone': '96550000000', 'action': 'verify_ok',
             'otp_type': 'portal_login',
         })
         requests = self.Log.search([
