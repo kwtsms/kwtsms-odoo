@@ -32,10 +32,10 @@ class TestNormalizePhone(TransactionCase):
         self.assertEqual(normalize_phone('965 5000 0000'), '96550000000')
 
     def test_strip_dashes(self):
-        self.assertEqual(normalize_phone('965-9876-5432'), '96550000000')
+        self.assertEqual(normalize_phone('965-5000-0000'), '96550000000')
 
     def test_strip_dots(self):
-        self.assertEqual(normalize_phone('965.9876.5432'), '96550000000')
+        self.assertEqual(normalize_phone('965.5000.0000'), '96550000000')
 
     def test_strip_parentheses(self):
         self.assertEqual(normalize_phone('(965) 50000000'), '96550000000')
@@ -43,47 +43,47 @@ class TestNormalizePhone(TransactionCase):
     def test_arabic_indic_digits(self):
         """Arabic-Indic digits U+0660-U+0669."""
         self.assertEqual(
-            normalize_phone('\u0669\u0666\u0665\u0669\u0668\u0667\u0666\u0665\u0664\u0663\u0662'),
+            normalize_phone('\u0669\u0666\u0665\u0665\u0660\u0660\u0660\u0660\u0660\u0660\u0660'),
             '96550000000',
         )
 
     def test_persian_digits(self):
         """Extended Arabic-Indic / Persian digits U+06F0-U+06F9."""
         self.assertEqual(
-            normalize_phone('\u06f9\u06f6\u06f5\u06f9\u06f8\u06f7\u06f6\u06f5\u06f4\u06f3\u06f2'),
+            normalize_phone('\u06f9\u06f6\u06f5\u06f5\u06f0\u06f0\u06f0\u06f0\u06f0\u06f0\u06f0'),
             '96550000000',
         )
 
     def test_mixed_arabic_latin(self):
         """Mixed Arabic-Indic and Latin digits."""
-        self.assertEqual(normalize_phone('965\u0669\u0668\u0667\u0666\u0665\u0664\u0663\u0662'), '96550000000')
+        self.assertEqual(normalize_phone('965\u0665\u0660\u0660\u0660\u0660\u0660\u0660\u0660'), '96550000000')
 
     def test_arabic_indic_with_plus(self):
         self.assertEqual(
-            normalize_phone('+\u0669\u0666\u0665\u0669\u0668\u0667\u0666\u0665\u0664\u0663\u0662'),
+            normalize_phone('+\u0669\u0666\u0665\u0665\u0660\u0660\u0660\u0660\u0660\u0660\u0660'),
             '96550000000',
         )
 
     def test_arabic_indic_with_double_zero(self):
         self.assertEqual(
-            normalize_phone('\u0660\u0660\u0669\u0666\u0665\u0669\u0668\u0667\u0666\u0665\u0664\u0663\u0662'),
+            normalize_phone('\u0660\u0660\u0669\u0666\u0665\u0665\u0660\u0660\u0660\u0660\u0660\u0660\u0660'),
             '96550000000',
         )
 
     def test_arabic_indic_with_spaces(self):
         self.assertEqual(
-            normalize_phone('\u0669\u0666\u0665 \u0669\u0668\u0667\u0666 \u0665\u0664\u0663\u0662'),
+            normalize_phone('\u0669\u0666\u0665 \u0665\u0660\u0660\u0660 \u0660\u0660\u0660\u0660'),
             '96550000000',
         )
 
     def test_arabic_indic_with_dashes(self):
         self.assertEqual(
-            normalize_phone('\u0669\u0666\u0665-\u0669\u0668\u0667\u0666-\u0665\u0664\u0663\u0662'),
+            normalize_phone('\u0669\u0666\u0665-\u0665\u0660\u0660\u0660-\u0660\u0660\u0660\u0660'),
             '96550000000',
         )
 
     def test_mixed_arabic_latin_dashes(self):
-        self.assertEqual(normalize_phone('+\u0669\u0666\u0665-9876-5432'), '96550000000')
+        self.assertEqual(normalize_phone('+\u0669\u0666\u0665-5000-0000'), '96550000000')
 
     def test_empty_string(self):
         self.assertEqual(normalize_phone(''), '')
@@ -112,7 +112,7 @@ class TestValidatePhone(TransactionCase):
         self.assertIsNone(error)
 
     def test_valid_arabic_indic(self):
-        number, error = validate_phone('\u0669\u0666\u0665\u0669\u0668\u0667\u0666\u0665\u0664\u0663\u0662')
+        number, error = validate_phone('\u0669\u0666\u0665\u0665\u0660\u0660\u0660\u0660\u0660\u0660\u0660')
         self.assertEqual(number, '96550000000')
         self.assertIsNone(error)
 
