@@ -7,6 +7,8 @@
 
 Send SMS messages from Odoo using the [kwtSMS](https://www.kwtsms.com) gateway. Replaces Odoo's built-in IAP SMS credits with a direct kwtSMS integration for Kuwait and international messaging.
 
+Setup guide and use cases: [kwtsms.com/integrations/odoo.html](https://www.kwtsms.com/integrations/odoo.html)
+
 ## Features
 
 - **SMS Gateway Integration**: Direct kwtSMS API integration (JSON REST API)
