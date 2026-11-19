@@ -1,3 +1,4 @@
+# 2026-11-19 03:48 +03: old sample Kuwait number (a real person's) -> 96550000000 / 50000000 in all forms, #1519
 """Tests for Phase 4 OTP models, services, and MFA hooks."""
 
 from datetime import timedelta
@@ -140,7 +141,7 @@ class TestOtpToken(TransactionCase):
 
     def _create_token(self, **kw):
         vals = {
-            'phone': '96598765432',
+            'phone': '96550000000',
             'otp_hash': hash_otp('123456'),
             'otp_type': 'portal_login',
             'state': 'pending',
@@ -153,7 +154,7 @@ class TestOtpToken(TransactionCase):
         """Token creation stores all fields."""
         token = self._create_token()
         self.assertTrue(token.id)
-        self.assertEqual(token.phone, '96598765432')
+        self.assertEqual(token.phone, '96550000000')
         self.assertEqual(token.state, 'pending')
         self.assertEqual(token.attempt_count, 0)
 
@@ -291,7 +292,7 @@ class TestOtpLog(TransactionCase):
 
     def _create_log(self, **kw):
         vals = {
-            'phone': '96598765432',
+            'phone': '96550000000',
             'action': 'request',
             'otp_type': 'portal_login',
             'ip_address': '127.0.0.1',
@@ -453,25 +454,25 @@ class TestResPartnerNormalizedPhone(TransactionCase):
         """Phone is normalized and stored."""
         partner = self.env['res.partner'].create({
             'name': 'Test Partner',
-            'phone': '+96598765432',
+            'phone': '+96550000000',
         })
-        self.assertEqual(partner.kwtsms_phone_normalized, '96598765432')
+        self.assertEqual(partner.kwtsms_phone_normalized, '96550000000')
 
     def test_normalized_phone_without_plus(self):
         """Phone without + prefix is normalized."""
         partner = self.env['res.partner'].create({
             'name': 'Test Partner',
-            'phone': '96598765432',
+            'phone': '96550000000',
         })
-        self.assertEqual(partner.kwtsms_phone_normalized, '96598765432')
+        self.assertEqual(partner.kwtsms_phone_normalized, '96550000000')
 
     def test_normalized_phone_with_spaces(self):
         """Phone with spaces is normalized."""
         partner = self.env['res.partner'].create({
             'name': 'Test Partner',
-            'phone': '+965 9876 5432',
+            'phone': '+965 5000 0000',
         })
-        self.assertEqual(partner.kwtsms_phone_normalized, '96598765432')
+        self.assertEqual(partner.kwtsms_phone_normalized, '96550000000')
 
     def test_normalized_phone_empty(self):
         """Empty phone results in False."""
@@ -484,9 +485,9 @@ class TestResPartnerNormalizedPhone(TransactionCase):
         """Changing phone field updates the normalized field."""
         partner = self.env['res.partner'].create({
             'name': 'Update Partner',
-            'phone': '+96598765432',
+            'phone': '+96550000000',
         })
-        self.assertEqual(partner.kwtsms_phone_normalized, '96598765432')
+        self.assertEqual(partner.kwtsms_phone_normalized, '96550000000')
         partner.write({'phone': '+96599887766'})
         self.assertEqual(partner.kwtsms_phone_normalized, '96599887766')
 
@@ -494,7 +495,7 @@ class TestResPartnerNormalizedPhone(TransactionCase):
         """Clearing phone sets normalized to False."""
         partner = self.env['res.partner'].create({
             'name': 'Clear Partner',
-            'phone': '98765432',
+            'phone': '50000000',
         })
         partner.write({'phone': False})
         self.assertFalse(partner.kwtsms_phone_normalized)
@@ -503,7 +504,7 @@ class TestResPartnerNormalizedPhone(TransactionCase):
         """Arabic/Hindi digits are converted before normalization."""
         partner = self.env['res.partner'].create({
             'name': 'Arabic Digits',
-            'phone': '+\u0669\u0666\u0665\u0669\u0668\u0667\u0666\u0665\u0664\u0663\u0662',
+            'phone': '+\u0669\u0666\u0665\u0665\u0660\u0660\u0660\u0660\u0660\u0660\u0660',
         })
-        # Arabic digits +96598765432
-        self.assertEqual(partner.kwtsms_phone_normalized, '96598765432')
+        # Arabic digits +96550000000
+        self.assertEqual(partner.kwtsms_phone_normalized, '96550000000')

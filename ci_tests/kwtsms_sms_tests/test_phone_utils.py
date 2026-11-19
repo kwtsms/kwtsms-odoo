@@ -1,3 +1,4 @@
+# 2026-11-19 03:48 +03: old sample Kuwait number (a real person's) -> 96550000000 / 50000000 in all forms, #1519
 """Tests for phone_utils module.
 
 Covers normalization, validation, message cleaning, and SMS part counting.
@@ -22,67 +23,67 @@ class TestNormalizePhone(TransactionCase):
     """Test phone number normalization."""
 
     def test_strip_plus(self):
-        self.assertEqual(normalize_phone('+96598765432'), '96598765432')
+        self.assertEqual(normalize_phone('+96550000000'), '96550000000')
 
     def test_strip_double_zero(self):
-        self.assertEqual(normalize_phone('0096598765432'), '96598765432')
+        self.assertEqual(normalize_phone('0096550000000'), '96550000000')
 
     def test_strip_spaces(self):
-        self.assertEqual(normalize_phone('965 9876 5432'), '96598765432')
+        self.assertEqual(normalize_phone('965 5000 0000'), '96550000000')
 
     def test_strip_dashes(self):
-        self.assertEqual(normalize_phone('965-9876-5432'), '96598765432')
+        self.assertEqual(normalize_phone('965-5000-0000'), '96550000000')
 
     def test_strip_dots(self):
-        self.assertEqual(normalize_phone('965.9876.5432'), '96598765432')
+        self.assertEqual(normalize_phone('965.5000.0000'), '96550000000')
 
     def test_strip_parentheses(self):
-        self.assertEqual(normalize_phone('(965) 98765432'), '96598765432')
+        self.assertEqual(normalize_phone('(965) 50000000'), '96550000000')
 
     def test_arabic_indic_digits(self):
         """Arabic-Indic digits U+0660-U+0669."""
         self.assertEqual(
-            normalize_phone('\u0669\u0666\u0665\u0669\u0668\u0667\u0666\u0665\u0664\u0663\u0662'),
-            '96598765432',
+            normalize_phone('\u0669\u0666\u0665\u0665\u0660\u0660\u0660\u0660\u0660\u0660\u0660'),
+            '96550000000',
         )
 
     def test_persian_digits(self):
         """Extended Arabic-Indic / Persian digits U+06F0-U+06F9."""
         self.assertEqual(
-            normalize_phone('\u06f9\u06f6\u06f5\u06f9\u06f8\u06f7\u06f6\u06f5\u06f4\u06f3\u06f2'),
-            '96598765432',
+            normalize_phone('\u06f9\u06f6\u06f5\u06f5\u06f0\u06f0\u06f0\u06f0\u06f0\u06f0\u06f0'),
+            '96550000000',
         )
 
     def test_mixed_arabic_latin(self):
         """Mixed Arabic-Indic and Latin digits."""
-        self.assertEqual(normalize_phone('965\u0669\u0668\u0667\u0666\u0665\u0664\u0663\u0662'), '96598765432')
+        self.assertEqual(normalize_phone('965\u0665\u0660\u0660\u0660\u0660\u0660\u0660\u0660'), '96550000000')
 
     def test_arabic_indic_with_plus(self):
         self.assertEqual(
-            normalize_phone('+\u0669\u0666\u0665\u0669\u0668\u0667\u0666\u0665\u0664\u0663\u0662'),
-            '96598765432',
+            normalize_phone('+\u0669\u0666\u0665\u0665\u0660\u0660\u0660\u0660\u0660\u0660\u0660'),
+            '96550000000',
         )
 
     def test_arabic_indic_with_double_zero(self):
         self.assertEqual(
-            normalize_phone('\u0660\u0660\u0669\u0666\u0665\u0669\u0668\u0667\u0666\u0665\u0664\u0663\u0662'),
-            '96598765432',
+            normalize_phone('\u0660\u0660\u0669\u0666\u0665\u0665\u0660\u0660\u0660\u0660\u0660\u0660\u0660'),
+            '96550000000',
         )
 
     def test_arabic_indic_with_spaces(self):
         self.assertEqual(
-            normalize_phone('\u0669\u0666\u0665 \u0669\u0668\u0667\u0666 \u0665\u0664\u0663\u0662'),
-            '96598765432',
+            normalize_phone('\u0669\u0666\u0665 \u0665\u0660\u0660\u0660 \u0660\u0660\u0660\u0660'),
+            '96550000000',
         )
 
     def test_arabic_indic_with_dashes(self):
         self.assertEqual(
-            normalize_phone('\u0669\u0666\u0665-\u0669\u0668\u0667\u0666-\u0665\u0664\u0663\u0662'),
-            '96598765432',
+            normalize_phone('\u0669\u0666\u0665-\u0665\u0660\u0660\u0660-\u0660\u0660\u0660\u0660'),
+            '96550000000',
         )
 
     def test_mixed_arabic_latin_dashes(self):
-        self.assertEqual(normalize_phone('+\u0669\u0666\u0665-9876-5432'), '96598765432')
+        self.assertEqual(normalize_phone('+\u0669\u0666\u0665-5000-0000'), '96550000000')
 
     def test_empty_string(self):
         self.assertEqual(normalize_phone(''), '')
@@ -96,23 +97,23 @@ class TestValidatePhone(TransactionCase):
     """Test phone number validation."""
 
     def test_valid_with_plus(self):
-        number, error = validate_phone('+96598765432')
-        self.assertEqual(number, '96598765432')
+        number, error = validate_phone('+96550000000')
+        self.assertEqual(number, '96550000000')
         self.assertIsNone(error)
 
     def test_valid_with_double_zero(self):
-        number, error = validate_phone('0096598765432')
-        self.assertEqual(number, '96598765432')
+        number, error = validate_phone('0096550000000')
+        self.assertEqual(number, '96550000000')
         self.assertIsNone(error)
 
     def test_valid_with_spaces(self):
-        number, error = validate_phone('965 9876 5432')
-        self.assertEqual(number, '96598765432')
+        number, error = validate_phone('965 5000 0000')
+        self.assertEqual(number, '96550000000')
         self.assertIsNone(error)
 
     def test_valid_arabic_indic(self):
-        number, error = validate_phone('\u0669\u0666\u0665\u0669\u0668\u0667\u0666\u0665\u0664\u0663\u0662')
-        self.assertEqual(number, '96598765432')
+        number, error = validate_phone('\u0669\u0666\u0665\u0665\u0660\u0660\u0660\u0660\u0660\u0660\u0660')
+        self.assertEqual(number, '96550000000')
         self.assertIsNone(error)
 
     def test_valid_min_length_7_digits(self):
@@ -178,7 +179,7 @@ class TestFindCountryCode(TransactionCase):
     """Test country code detection from normalized numbers."""
 
     def test_kuwait_965(self):
-        self.assertEqual(find_country_code('96598765432'), '965')
+        self.assertEqual(find_country_code('96550000000'), '965')
 
     def test_saudi_966(self):
         self.assertEqual(find_country_code('966512345678'), '966')
@@ -196,7 +197,7 @@ class TestFindCountryCode(TransactionCase):
         self.assertEqual(find_country_code('447911123456'), '44')
 
     def test_india_91(self):
-        self.assertEqual(find_country_code('919876543210'), '91')
+        self.assertEqual(find_country_code('915000000010'), '91')
 
     def test_unknown_country_returns_none(self):
         """Number with no matching country code returns None."""
@@ -204,7 +205,7 @@ class TestFindCountryCode(TransactionCase):
 
     def test_three_digit_code_priority(self):
         """3-digit codes are matched before 2-digit (e.g. 965 not 96)."""
-        self.assertEqual(find_country_code('96598765432'), '965')
+        self.assertEqual(find_country_code('96550000000'), '965')
 
 
 @tagged('post_install', '-at_install')
@@ -213,7 +214,7 @@ class TestValidatePhoneFormat(TransactionCase):
 
     # --- Kuwait (965) ---
     def test_kuwait_valid_9x(self):
-        valid, error = validate_phone_format('96598765432')
+        valid, error = validate_phone_format('96550000000')
         self.assertTrue(valid)
         self.assertIsNone(error)
 
@@ -231,7 +232,7 @@ class TestValidatePhoneFormat(TransactionCase):
 
     def test_kuwait_wrong_length(self):
         """Kuwait expects 8 local digits, 7 should fail."""
-        valid, error = validate_phone_format('9659876543')
+        valid, error = validate_phone_format('9655000000')
         self.assertFalse(valid)
         self.assertIn('Kuwait', error)
         self.assertIn('8 digits', error)
@@ -311,8 +312,8 @@ class TestValidatePhoneCountryIntegration(TransactionCase):
     """Test that validate_phone() integrates country-specific checks."""
 
     def test_valid_kuwait(self):
-        number, error = validate_phone('+96598765432')
-        self.assertEqual(number, '96598765432')
+        number, error = validate_phone('+96550000000')
+        self.assertEqual(number, '96550000000')
         self.assertIsNone(error)
 
     def test_invalid_kuwait_prefix(self):
@@ -323,7 +324,7 @@ class TestValidatePhoneCountryIntegration(TransactionCase):
 
     def test_invalid_kuwait_length(self):
         """Kuwait number with wrong local length should be rejected."""
-        number, error = validate_phone('+9659876543')
+        number, error = validate_phone('+9655000000')
         self.assertIsNone(number)
         self.assertIn('8 digits', error)
 
@@ -375,17 +376,17 @@ class TestValidatePhoneList(TransactionCase):
 
     def test_mixed_list(self):
         valid, invalid = validate_phone_list([
-            '+96598765432',
+            '+96550000000',
             'user@email.com',
             '123',
         ])
         self.assertEqual(len(valid), 1)
-        self.assertEqual(valid[0], '96598765432')
+        self.assertEqual(valid[0], '96550000000')
         self.assertEqual(len(invalid), 2)
 
     def test_all_valid(self):
         valid, invalid = validate_phone_list([
-            '96598765432',
+            '96550000000',
             '+96555512345',
             '0096566778899',
         ])
