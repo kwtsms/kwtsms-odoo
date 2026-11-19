@@ -504,7 +504,7 @@ class TestResPartnerNormalizedPhone(TransactionCase):
         """Arabic/Hindi digits are converted before normalization."""
         partner = self.env['res.partner'].create({
             'name': 'Arabic Digits',
-            'phone': '+\u0669\u0666\u0665\u0669\u0668\u0667\u0666\u0665\u0664\u0663\u0662',
+            'phone': '+\u0669\u0666\u0665\u0665\u0660\u0660\u0660\u0660\u0660\u0660\u0660',
         })
         # Arabic digits +96550000000
         self.assertEqual(partner.kwtsms_phone_normalized, '96550000000')
