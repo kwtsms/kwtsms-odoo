@@ -1,3 +1,4 @@
+# 2026-11-19 03:48 +03: old sample Kuwait number (a real person's) -> 96550000000 / 50000000 in all forms, #1519
 # 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """Tests for the SMS Compose Wizard."""
 
@@ -24,7 +25,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
 
         cls.partner = cls.env['res.partner'].create({
             'name': 'Maryam Al-Mutairi',
-            'phone': '+96598765432',
+            'phone': '+96550000000',
         })
 
         cls.template = cls.env['kwtsms.sms.template'].create({
@@ -41,11 +42,11 @@ class TestKwtSmsComposeWizard(TransactionCase):
     def test_create_basic_wizard(self):
         """Test basic wizard creation."""
         wizard = self.env['kwtsms.sms.compose'].create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'Test message',
         })
         self.assertTrue(wizard.id)
-        self.assertEqual(wizard.phone, '96598765432')
+        self.assertEqual(wizard.phone, '96550000000')
         self.assertEqual(wizard.message, 'Test message')
 
     def test_default_get_with_partner_context(self):
@@ -56,7 +57,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
         ).create({
             'message': 'Hello',
         })
-        self.assertEqual(wizard.phone, '+96598765432')
+        self.assertEqual(wizard.phone, '+96550000000')
         self.assertEqual(wizard.res_model, 'res.partner')
         self.assertEqual(wizard.res_id, self.partner.id)
 
@@ -81,14 +82,14 @@ class TestKwtSmsComposeWizard(TransactionCase):
         ).create({
             'message': 'Order SMS',
         })
-        self.assertEqual(wizard.phone, '+96598765432')
+        self.assertEqual(wizard.phone, '+96550000000')
         self.assertEqual(wizard.res_model, 'sale.order')
         self.assertEqual(wizard.res_id, order.id)
 
     def test_default_get_no_context(self):
         """Test default_get works without active_model context."""
         wizard = self.env['kwtsms.sms.compose'].create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'No context',
         })
         self.assertFalse(wizard.res_model)
@@ -115,7 +116,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
     def test_onchange_template_id_populates_body(self):
         """Test selecting a template populates the message field."""
         wizard = self.env['kwtsms.sms.compose'].new({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': '',
             'template_id': self.template.id,
         })
@@ -129,7 +130,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
     def test_onchange_template_id_renders_with_record(self):
         """Test selecting a template renders placeholders when record exists."""
         wizard = self.env['kwtsms.sms.compose'].new({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': '',
             'template_id': self.template.id,
             'res_model': 'res.partner',
@@ -143,7 +144,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
     def test_onchange_template_id_no_template(self):
         """Test onchange with no template selected does nothing."""
         wizard = self.env['kwtsms.sms.compose'].new({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'Original message',
             'template_id': False,
         })
@@ -159,7 +160,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
             'body': '',
         })
         wizard = self.env['kwtsms.sms.compose'].new({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'Original',
             'template_id': empty_template.id,
         })
@@ -174,7 +175,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
     def test_compute_sms_info_english(self):
         """Test SMS info for English (GSM-7) message."""
         wizard = self.env['kwtsms.sms.compose'].create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'Hello World',
         })
         self.assertEqual(wizard.char_count, 11)
@@ -184,7 +185,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
     def test_compute_sms_info_arabic(self):
         """Test SMS info for Arabic (Unicode) message."""
         wizard = self.env['kwtsms.sms.compose'].create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': '\u0645\u0631\u062d\u0628\u0627',
         })
         self.assertTrue(wizard.char_count > 0)
@@ -194,7 +195,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
     def test_compute_sms_info_empty(self):
         """Test SMS info for empty message."""
         wizard = self.env['kwtsms.sms.compose'].create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': '',
         })
         self.assertEqual(wizard.char_count, 0)
@@ -204,7 +205,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
     def test_compute_sms_info_multipage(self):
         """Test SMS info for long message spanning multiple pages."""
         wizard = self.env['kwtsms.sms.compose'].create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'A' * 200,
         })
         self.assertEqual(wizard.char_count, 200)
@@ -226,7 +227,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
         }
 
         wizard = self.env['kwtsms.sms.compose'].create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'Hello from wizard',
         })
         result = wizard.action_send()
@@ -252,7 +253,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
         }
 
         wizard = self.env['kwtsms.sms.compose'].create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'Hello from wizard',
         })
         with self.assertRaises(UserError):
@@ -273,7 +274,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
     def test_action_send_no_message(self):
         """Test action_send raises UserError when message is empty."""
         wizard = self.env['kwtsms.sms.compose'].create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': '',
         })
         with self.assertRaises(UserError):
@@ -289,7 +290,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
         }
 
         wizard = self.env['kwtsms.sms.compose'].create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'Hello World',
             'template_id': self.template.id,
         })
@@ -310,7 +311,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
         }
 
         wizard = self.env['kwtsms.sms.compose'].create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'Hello',
             'res_model': 'res.partner',
             'res_id': self.partner.id,
@@ -333,7 +334,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
         }
 
         wizard = self.env['kwtsms.sms.compose'].create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'Test mode message',
         })
         wizard.action_send()
@@ -356,7 +357,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
         }
 
         wizard = self.env['kwtsms.sms.compose'].create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'Production message',
         })
         wizard.action_send()
@@ -379,7 +380,7 @@ class TestKwtSmsComposeWizard(TransactionCase):
         }
 
         wizard = self.env['kwtsms.sms.compose'].create({
-            'phone': '96598765432',
+            'phone': '96550000000',
             'message': 'Manual message',
         })
         wizard.action_send()

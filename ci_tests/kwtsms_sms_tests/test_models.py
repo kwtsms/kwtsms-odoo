@@ -1,3 +1,4 @@
+# 2026-11-19 03:48 +03: old sample Kuwait number (a real person's) -> 96550000000 / 50000000 in all forms, #1519
 # 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """Tests for kwtSMS models: gateway config, SMS log, SMS template, settings."""
 
@@ -208,7 +209,7 @@ class TestKwtSmsLog(TransactionCase):
     def _create_log(self, **kwargs):
         """Helper to create a log record with defaults."""
         vals = {
-            'phone_number': '96598765432',
+            'phone_number': '96550000000',
             'message_body': 'Test message',
             'status': 'success',
             'company_id': self.company.id,
@@ -220,23 +221,23 @@ class TestKwtSmsLog(TransactionCase):
         """Test basic log record creation."""
         log = self._create_log()
         self.assertTrue(log.id)
-        self.assertEqual(log.phone_number, '96598765432')
+        self.assertEqual(log.phone_number, '96550000000')
         self.assertEqual(log.message_body, 'Test message')
         self.assertEqual(log.status, 'success')
 
     def test_compute_name(self):
         """Test computed name field includes phone and date."""
-        log = self._create_log(phone_number='96598765432')
-        self.assertIn('96598765432', log.name)
+        log = self._create_log(phone_number='96550000000')
+        self.assertIn('96550000000', log.name)
         self.assertIn('SMS to', log.name)
 
     def test_compute_name_no_date(self):
         """Test computed name when create_date is not yet set."""
         log = self.env['kwtsms.sms.log'].new({
-            'phone_number': '96598765432',
+            'phone_number': '96550000000',
         })
         log._compute_name()
-        self.assertIn('96598765432', log.name)
+        self.assertIn('96550000000', log.name)
 
     def test_action_view_related_record(self):
         """Test action_view_related_record returns correct action."""
@@ -335,8 +336,8 @@ class TestKwtSmsLog(TransactionCase):
 
     def test_ordering(self):
         """Test logs are ordered by create_date desc (newer ID first)."""
-        log1 = self._create_log(phone_number='96598765432')
-        log2 = self._create_log(phone_number='96598765432')
+        log1 = self._create_log(phone_number='96550000000')
+        log2 = self._create_log(phone_number='96550000000')
         logs = self.env['kwtsms.sms.log'].search([
             ('id', 'in', [log1.id, log2.id]),
         ])
