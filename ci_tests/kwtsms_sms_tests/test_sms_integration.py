@@ -1,3 +1,4 @@
+# 2026-11-19 03:48 +03: old sample Kuwait number (a real person's) -> 96550000000 / 50000000 in all forms, #1519
 # 2026-11-16 01:23 +03: Odoo 20 removed ir.config_parameter get_param/set_param; calls renamed to get_str/set_str. Task int-backport
 """Tests for SMS sending integration: API, batch sending, business event hooks."""
 
@@ -41,7 +42,7 @@ class TestKwtSmsApi(TransactionCase):
         }
 
         api = self._get_api()
-        result = api.send('96598765432', 'Hello test')
+        result = api.send('96550000000', 'Hello test')
 
         self.assertEqual(result['result'], 'OK')
         self.assertEqual(result['msg-id'], 'MSG-001')
@@ -52,7 +53,7 @@ class TestKwtSmsApi(TransactionCase):
         self.assertEqual(call_args[0][0], 'send')
         payload = call_args[0][1]
         self.assertEqual(payload['username'], 'testuser')
-        self.assertEqual(payload['mobile'], '96598765432')
+        self.assertEqual(payload['mobile'], '96550000000')
         self.assertEqual(payload['message'], 'Hello test')
         self.assertEqual(payload['test'], '1')
 
@@ -66,7 +67,7 @@ class TestKwtSmsApi(TransactionCase):
         }
 
         api = self._get_api()
-        result = api.send('96598765432', 'Hello test')
+        result = api.send('96550000000', 'Hello test')
 
         self.assertEqual(result['result'], 'ERROR')
         self.assertEqual(result['code'], 'ERR010')
@@ -82,7 +83,7 @@ class TestKwtSmsApi(TransactionCase):
     def test_send_empty_message(self):
         """Test send with an empty message."""
         api = self._get_api()
-        result = api.send('96598765432', '')
+        result = api.send('96550000000', '')
 
         self.assertEqual(result['result'], 'ERROR')
         self.assertEqual(result['code'], 'ERR_VALIDATION')
@@ -100,7 +101,7 @@ class TestKwtSmsApi(TransactionCase):
         mock_api_call.return_value = {'result': 'OK'}
 
         api = self._get_api()
-        api.send('96598765432', 'Hello', sender_id='CUSTOM')
+        api.send('96550000000', 'Hello', sender_id='CUSTOM')
 
         payload = mock_api_call.call_args[0][1]
         self.assertEqual(payload['sender'], 'CUSTOM')
@@ -122,8 +123,8 @@ class TestKwtSmsApi(TransactionCase):
         messages = [{
             'content': 'Hello batch test',
             'numbers': [
-                {'uuid': 'uuid-1', 'number': '96598765432'},
-                {'uuid': 'uuid-2', 'number': '+96598765432'},
+                {'uuid': 'uuid-1', 'number': '96550000000'},
+                {'uuid': 'uuid-2', 'number': '+96550000000'},
             ],
         }]
         results = api._send_sms_batch(messages)
@@ -146,7 +147,7 @@ class TestKwtSmsApi(TransactionCase):
         messages = [{
             'content': 'Hello',
             'numbers': [
-                {'uuid': 'uuid-1', 'number': '96598765432'},
+                {'uuid': 'uuid-1', 'number': '96550000000'},
             ],
         }]
         results = api._send_sms_batch(messages)
@@ -189,7 +190,7 @@ class TestKwtSmsApi(TransactionCase):
         messages = [{
             'content': 'Hello',
             'numbers': [
-                {'uuid': 'uuid-valid', 'number': '96598765432'},
+                {'uuid': 'uuid-valid', 'number': '96550000000'},
                 {'uuid': 'uuid-bad', 'number': '123'},
             ],
         }]
@@ -210,7 +211,7 @@ class TestKwtSmsApi(TransactionCase):
         messages = [{
             'content': '',
             'numbers': [
-                {'uuid': 'uuid-1', 'number': '96598765432'},
+                {'uuid': 'uuid-1', 'number': '96550000000'},
             ],
         }]
         results = api._send_sms_batch(messages)
@@ -231,11 +232,11 @@ class TestKwtSmsApi(TransactionCase):
         messages = [
             {
                 'content': 'Message one',
-                'numbers': [{'uuid': 'uuid-1', 'number': '96598765432'}],
+                'numbers': [{'uuid': 'uuid-1', 'number': '96550000000'}],
             },
             {
                 'content': 'Message two',
-                'numbers': [{'uuid': 'uuid-2', 'number': '96598765432'}],
+                'numbers': [{'uuid': 'uuid-2', 'number': '96550000000'}],
             },
         ]
         results = api._send_sms_batch(messages)
@@ -264,7 +265,7 @@ class TestKwtSmsApi(TransactionCase):
             }
             messages = [{
                 'content': 'Hello',
-                'numbers': [{'uuid': f'uuid-{error_code}', 'number': '96598765432'}],
+                'numbers': [{'uuid': f'uuid-{error_code}', 'number': '96550000000'}],
             }]
             results = api._send_sms_batch(messages)
             self.assertEqual(
@@ -298,7 +299,7 @@ class TestKwtSmsApi(TransactionCase):
         """Test that _log_send creates a kwtsms.sms.log record."""
         api = self._get_api()
         api._log_send(
-            numbers='96598765432',
+            numbers='96550000000',
             message='Test log message',
             response={'result': 'OK', 'msg-id': 'MSG-100', 'points-charged': 1},
             status='success',
@@ -308,7 +309,7 @@ class TestKwtSmsApi(TransactionCase):
             ('msg_id', '=', 'MSG-100'),
         ], limit=1)
         self.assertTrue(log)
-        self.assertEqual(log.phone_number, '96598765432')
+        self.assertEqual(log.phone_number, '96550000000')
         self.assertEqual(log.message_body, 'Test log message')
         self.assertEqual(log.status, 'success')
         self.assertEqual(log.points_charged, 1)
@@ -319,7 +320,7 @@ class TestKwtSmsApi(TransactionCase):
         """Test that _log_send does not store passwords in the log."""
         api = self._get_api()
         api._log_send(
-            numbers='96598765432',
+            numbers='96550000000',
             message='Test',
             response={
                 'result': 'OK',
@@ -340,7 +341,7 @@ class TestKwtSmsApi(TransactionCase):
         """Test _log_send records error details."""
         api = self._get_api()
         api._log_send(
-            numbers='96598765432',
+            numbers='96550000000',
             message='Test',
             response={'result': 'ERROR', 'code': 'ERR010'},
             status='error',
@@ -362,7 +363,7 @@ class TestKwtSmsApi(TransactionCase):
 
         api = self._get_api()
         api._log_send(
-            numbers='96598765432',
+            numbers='96550000000',
             message='Test',
             response={'result': 'OK', 'msg-id': 'MSG-REL'},
             status='success',
@@ -440,17 +441,17 @@ class TestKwtSmsApi(TransactionCase):
     def test_validate_numbers(self, mock_api_call):
         """Test validate_numbers with valid and invalid numbers."""
         mock_api_call.return_value = {
-            'ok': ['96598765432'],
+            'ok': ['96550000000'],
             'er': [],
             'nr': [],
         }
 
         api = self._get_api()
-        result = api.validate_numbers(['+96598765432'])
+        result = api.validate_numbers(['+96550000000'])
 
         self.assertIn('ok', result)
         payload = mock_api_call.call_args[0][1]
-        self.assertEqual(payload['mobile'], '96598765432')
+        self.assertEqual(payload['mobile'], '96550000000')
 
     def test_validate_numbers_all_invalid(self):
         """Test validate_numbers with all invalid numbers."""
@@ -502,7 +503,7 @@ class TestKwtSmsApi(TransactionCase):
         config.write({'balance_available': 0})
 
         api = self._get_api()
-        result = api.send('96598765432', 'Hello test')
+        result = api.send('96550000000', 'Hello test')
 
         self.assertEqual(result['result'], 'ERROR')
         self.assertEqual(result['code'], 'ERR_NO_BALANCE')
@@ -518,7 +519,7 @@ class TestKwtSmsApi(TransactionCase):
         api = self._get_api()
         self.assertTrue(api._test_mode)
 
-        result = api.send('96598765432', 'Hello test')
+        result = api.send('96550000000', 'Hello test')
 
         self.assertEqual(result['result'], 'ERROR')
         self.assertEqual(result['code'], 'ERR_NO_BALANCE')
@@ -531,7 +532,7 @@ class TestKwtSmsApi(TransactionCase):
         config.write({'balance_available': -5})
 
         api = self._get_api()
-        result = api.send('96598765432', 'Hello test')
+        result = api.send('96550000000', 'Hello test')
 
         self.assertEqual(result['result'], 'ERROR')
         self.assertEqual(result['code'], 'ERR_NO_BALANCE')
@@ -551,7 +552,7 @@ class TestKwtSmsApi(TransactionCase):
         config.write({'balance_available': 100})
 
         api = self._get_api()
-        result = api.send('96598765432', 'Hello test')
+        result = api.send('96550000000', 'Hello test')
 
         self.assertEqual(result['result'], 'OK')
         mock_api_call.assert_called_once()
@@ -573,7 +574,7 @@ class TestKwtSmsApi(TransactionCase):
             '_get_or_create',
             side_effect=Exception('DB error'),
         ):
-            result = api.send('96598765432', 'Hello test')
+            result = api.send('96550000000', 'Hello test')
 
         # Should proceed despite config error
         self.assertEqual(result['result'], 'OK')
@@ -618,14 +619,14 @@ class TestKwtSmsApi(TransactionCase):
 
         api = self._get_api()
         # 965 is covered, 44 is not
-        result = api.send(['96598765432', '447911123456'], 'Hello')
+        result = api.send(['96550000000', '447911123456'], 'Hello')
 
         self.assertEqual(result['result'], 'OK')
         mock_api_call.assert_called_once()
 
         # Verify only the covered number was sent
         payload = mock_api_call.call_args[0][1]
-        self.assertEqual(payload['mobile'], '96598765432')
+        self.assertEqual(payload['mobile'], '96550000000')
 
         # Uncovered number should be in invalid list
         self.assertTrue(result.get('invalid'))
@@ -673,7 +674,7 @@ class TestKwtSmsApi(TransactionCase):
         })
 
         api = self._get_api()
-        result = api.send('96598765432', 'Hello')
+        result = api.send('96550000000', 'Hello')
         self.assertEqual(result['result'], 'OK')
         mock_api_call.assert_called()
 
@@ -681,7 +682,7 @@ class TestKwtSmsApi(TransactionCase):
         mock_api_call.reset_mock()
         config.write({'coverage_json': json.dumps(['96'])})
 
-        result = api.send('96598765432', 'Hello')
+        result = api.send('96550000000', 'Hello')
         self.assertEqual(result['result'], 'OK')
         mock_api_call.assert_called()
 
@@ -689,7 +690,7 @@ class TestKwtSmsApi(TransactionCase):
         mock_api_call.reset_mock()
         config.write({'coverage_json': json.dumps(['9'])})
 
-        result = api.send('96598765432', 'Hello')
+        result = api.send('96550000000', 'Hello')
         self.assertEqual(result['result'], 'OK')
         mock_api_call.assert_called()
 
@@ -713,7 +714,7 @@ class TestKwtSmsApi(TransactionCase):
             'get_coverage_prefixes',
             side_effect=Exception('JSON parse error'),
         ):
-            result = api.send('96598765432', 'Hello test')
+            result = api.send('96550000000', 'Hello test')
 
         self.assertEqual(result['result'], 'OK')
         mock_api_call.assert_called_once()
@@ -737,7 +738,7 @@ class TestSaleOrderSmsIntegration(TransactionCase):
 
         cls.partner = cls.env['res.partner'].create({
             'name': 'Ahmad Al-Sabah',
-            'phone': '+96598765432',
+            'phone': '+96550000000',
         })
 
         # Create a product for the sale order
@@ -789,7 +790,7 @@ class TestSaleOrderSmsIntegration(TransactionCase):
             ('res_id', '=', order.id),
         ], limit=1)
         self.assertTrue(log)
-        self.assertIn('96598765432', log.phone_number)
+        self.assertIn('96550000000', log.phone_number)
 
     @patch('odoo.addons.kwtsms_sms.tools.kwtsms_api.KwtSmsApi._api_call')
     def test_order_confirm_sms_disabled(self, mock_api_call):
@@ -899,7 +900,7 @@ class TestSaleOrderSmsIntegration(TransactionCase):
 
         ar_partner = self.env['res.partner'].create({
             'name': 'Hessa Al-Fahad',
-            'phone': '+96598765432',
+            'phone': '+96550000000',
             'lang': 'ar_001',
         })
         # Create order with English partner, then swap via SQL to avoid
@@ -958,7 +959,7 @@ class TestStockPickingSmsIntegration(TransactionCase):
 
         cls.partner = cls.env['res.partner'].create({
             'name': 'Fatima Al-Rashidi',
-            'phone': '+96598765432',
+            'phone': '+96550000000',
         })
 
         cls.product = cls.env['product.product'].create({
@@ -1016,7 +1017,7 @@ class TestStockPickingSmsIntegration(TransactionCase):
             ('res_id', '=', picking.id),
         ], limit=1)
         self.assertTrue(log)
-        self.assertIn('96598765432', log.phone_number)
+        self.assertIn('96550000000', log.phone_number)
 
     @patch('odoo.addons.kwtsms_sms.tools.kwtsms_api.KwtSmsApi._api_call')
     def test_delivery_done_sms_disabled(self, mock_api_call):
