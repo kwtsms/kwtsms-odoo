@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/readme-header-dark.png">
+  <img alt="kwtSMS for Odoo" src=".github/assets/readme-header-light.png">
+</picture>
+
 # kwtSMS Gateway for Odoo
 
 [![CI](https://github.com/kwtsms/kwtsms-odoo/actions/workflows/ci.yml/badge.svg)](https://github.com/kwtsms/kwtsms-odoo/actions/workflows/ci.yml)
